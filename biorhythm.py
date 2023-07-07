@@ -60,8 +60,7 @@ import math
 def get_bio(birthdate=datetime.now(),
             plotdate=datetime.now(),
             width=50, days=29):
-    """
-    Gets a biorhythm chart.
+    """ Gets a biorhythm chart.
     PARAMETERS:
     birthdate : the birth date of the person
     plotdate  : the plot date of the chart
