@@ -108,7 +108,7 @@ def get_bio(birthdate=datetime.now(),
     print(' ' * datepad, '-100% ', '=' * (width - 12), ' +100%', sep='')
 
     # Calculate the lowest date of the chart
-    lowdate = plotdate - timedelta(middays)
+    lowdate = plotdate - timedelta(days=middays)
 
     # Loop through each of the days
     for n in range(days):
