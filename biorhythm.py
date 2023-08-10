@@ -176,7 +176,7 @@ if __name__ == '__main__':
         print('Biorhythm:')
         year = int(input('  Enter your birth YEAR (0001-9999): '))
         month = int(input('  Enter your birth MONTH (1-12): '))
-        day = int(input('  Enter your birth DAY (0-31): '))
+        day = int(input('  Enter your birth DAY (1-31): '))
         print()
         main(year=year, month=month, day=day)
     except Exception as e:
