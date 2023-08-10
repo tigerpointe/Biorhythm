@@ -163,7 +163,7 @@ def main(year=datetime.now().year,
     PARAMETERS:
     year  : the birth year of the person (0001-9999)
     month : the birth month of the person (1-12)
-    day   : the birth day of the person (0-31)
+    day   : the birth day of the person (1-31)
     """
 
     birthdate = datetime(year, month, day)
