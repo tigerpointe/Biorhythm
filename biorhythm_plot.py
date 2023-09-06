@@ -47,7 +47,7 @@ Create a custom get_bio.py file for your own birthday or favorite celebrity.
 import biorhythm_plot as bp
 bp.main(year=1908, month=9, day=15)
 
-Open multiple windows concurrently.
+Create a custom get_bio.py file to open multiple windows concurrently.
 
 #!/usr/bin/env python3
 import biorhythm_plot as bp
