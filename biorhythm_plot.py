@@ -7,6 +7,7 @@ https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 History:
 01.00 2023-Aug-17 Scott S. Initial release.
 01.01 2023-Aug-18 Scott S. Added the secondary cycles.
+01.02 2023-Sep-07 Scott S. Added the y-axis limits.
 
 MIT License
 
@@ -192,6 +193,7 @@ def get_bio(birthdate=np.datetime64('today'),
     # Set the y-axis labels
     plt.gca().yaxis.set_major_formatter(mticker.PercentFormatter(1.0))
     plt.ylabel('Passive  Critical  Active', fontsize=10)
+    plt.ylim([-1, 1])
 
     # Enable the grid lines
     plt.grid(alpha=0.35)
