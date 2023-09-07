@@ -193,7 +193,7 @@ def get_bio(birthdate=np.datetime64('today'),
     # Set the y-axis labels
     plt.gca().yaxis.set_major_formatter(mticker.PercentFormatter(1.0))
     plt.ylabel('Passive  Critical  Active', fontsize=10)
-    plt.ylim([-1, 1])
+    plt.ylim([-1.1, 1.1])  # from -100% to +100% with padding
 
     # Enable the grid lines
     plt.grid(alpha=0.35)
