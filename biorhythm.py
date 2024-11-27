@@ -4,6 +4,7 @@ Plots a chart of physical, emotional, and intellectual cycles.
 https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 History:
 01.00 2023-Jun-21 Scott S. Initial release.
+01.01 2024-Nov-25 Scott S. Added plot date percentages.
 
 MIT License
 
@@ -71,6 +72,7 @@ def get_bio(birthdate=datetime.now(),
     # Define the output date and number formats
     longdate = '%a %b %d %Y'  # Wed Jan 31 1900
     shortdate = '%a %b %d'    # Wed Jan 31
+    percent = '{:+.1f}%'      # +999.9%
     number = '{:,}'           # 9,999
 
     # Define the wavelengths (days per cycle)
@@ -111,6 +113,7 @@ def get_bio(birthdate=datetime.now(),
     lowdate = plotdate - timedelta(days=middays)
 
     # Loop through each of the days
+    ppercent = epercent = ipercent = ''
     for n in range(days):
 
         # Calculate the next day to plot
@@ -142,6 +145,9 @@ def get_bio(birthdate=datetime.now(),
         space = ' '
         if nextdate == plotdate:
             space = '-'
+            ppercent = percent.format(pvalue * 100)
+            epercent = percent.format(evalue * 100)
+            ipercent = percent.format(ivalue * 100)
         out = list(space * width)
         out[midwidth] = ':'
         out[pindex] = 'p'
@@ -154,6 +160,10 @@ def get_bio(birthdate=datetime.now(),
         if iindex == pindex:
             out[iindex] = '*'
         print(nextdate.strftime(shortdate), ''.join(out), sep=' ')
+
+    # Write the percentages for the plot date
+    print(' ' * datepad, 'p:', ppercent,
+          ' e:', epercent, ' i:', ipercent, sep='')
 
 
 def main(year=datetime.now().year,
