@@ -113,7 +113,7 @@ def get_bio(birthdate=np.datetime64('today'),
     ae2wave = 43  # aesthetic
 
     # Sanity check (minimum days to plot)
-    if (days < 3):
+    if days < 3:
         days = 3
 
     # Calculate the midpoint of the chart
@@ -166,7 +166,7 @@ def get_bio(birthdate=np.datetime64('today'),
         cycles += 1
 
     # Sanity check (cycles to plot)
-    if (cycles < 1):
+    if cycles < 1:
         raise ValueError('No cycles were specified for display.')
 
     # Create the data labels

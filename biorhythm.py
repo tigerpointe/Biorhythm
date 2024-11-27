@@ -59,7 +59,7 @@ import math
 
 def get_bio(birthdate=datetime.now(),
             plotdate=datetime.now(),
-            width=50, days=29):
+            width=55, days=29):
     """ Gets a biorhythm chart.
     PARAMETERS:
     birthdate : the birth date of the person
@@ -80,7 +80,7 @@ def get_bio(birthdate=datetime.now(),
     iwave = 33  # intellectual
 
     # Sanity check (minimum width of the chart title)
-    if (width < 12):
+    if width < 12:
         width = 12
 
     # Calculate the midpoints of the chart
