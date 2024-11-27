@@ -95,7 +95,7 @@ param
 (
     $birthDate = (Get-Date) # today
   , $plotDate  = (Get-Date) # today
-  , $width = 50             # 50 characters
+  , $width = 55             # 55 characters
   , $days  = 29             # 29 days
 )
 
