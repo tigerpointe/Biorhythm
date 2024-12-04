@@ -78,6 +78,7 @@ History:
 01.00 2022-Dec-12 Scott S. Initial release.
 01.01 2022-Dec-15 Scott S. Added the plot date to the chart header.
 01.02 2023-Jun-21 Scott S. Optimized the source code and comments.
+01.03 2024-Nov-25 Scott S. Added plot date percentages.
 
 .LINK
 https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
@@ -100,8 +101,10 @@ param
 )
 
 # Define the output date formats
-$longDate  = "ddd MMM dd yyyy"; # Wed Jan 31 1900
-$shortDate = "ddd MMM dd";      # Wed Jan 31
+$longDate  = "ddd MMM dd yyyy";  # Wed Jan 31 1900
+$shortDate = "ddd MMM dd";       # Wed Jan 31
+$percent   = "{0:+#0.0;-#0.0}%"; # +999.9%
+$number    = "N0";               # 9,999
 
 # Define the wavelengths (days per cycle)
 # https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
@@ -123,7 +126,7 @@ $count = (New-TimeSpan -Start $birthDate.Date `
 # Write the chart header and label keys
 Write-Output "Birth:  $($birthDate.ToString($longDate))";
 Write-Output "Plot:   $($plotDate.ToString($longDate))";
-Write-Output "Alive:  $($count.ToString("N0")) days";
+Write-Output "Alive:  $($count.ToString($number)) days";
 Write-Output "p:      Physical";
 Write-Output "e:      Emotional";
 Write-Output "i:      Intellectual";
@@ -140,6 +143,7 @@ Write-Output "$(" " * $shortDate.Length) -100% $("=" * ($width - 12)) +100%";
 $lowDate = $plotDate.AddDays(-$midDays);
 
 # Loop through each of the days
+$pPercent = $ePercent = $iPercent = "";
 for ($n = 0; $n -lt $days; $n++)
 {
 
@@ -171,7 +175,13 @@ for ($n = 0; $n -lt $days; $n++)
 
   # Write the plot line, use an array of spaces equal to the chart width
   $space = " ";
-  if ($nextDate -eq $plotDate) { $space = "-"; }
+  if ($nextDate -eq $plotDate)
+  {
+      $space = "-";
+      $pPercent = $percent -f ($pValue * 100);
+      $ePercent = $percent -f ($eValue * 100);
+      $iPercent = $percent -f ($iValue * 100);
+  }
   $out = ($space * $width).ToCharArray();
   $out[$midWidth] = ":";
   $out[$pIndex]   = "p";
@@ -183,3 +193,7 @@ for ($n = 0; $n -lt $days; $n++)
   Write-Output "$($nextDate.ToString($shortDate)) $([String]::new($out))";
 
 }
+
+# Write the percentages for the plot date
+Write-Output `
+  "$(" " * $shortDate.Length) p:$pPercent e:$ePercent i:$iPercent";
