@@ -100,7 +100,7 @@ param
   , $days  = 29             # 29 days
 )
 
-# Define the output date formats
+# Define the output date and number formats
 $longDate  = "ddd MMM dd yyyy";  # Wed Jan 31 1900
 $shortDate = "ddd MMM dd";       # Wed Jan 31
 $percent   = "{0:+#0.0;-#0.0}%"; # +999.9%
