@@ -39,7 +39,7 @@ from datetime import datetime, timedelta
 import math
 
 
-def get_bio(birth=datetime.now(), plot=datetime.now(),  width=55, days=14):
+def get_bio(birth=datetime.now(), plot=datetime.now(), width=55, days=14):
     print('\nBIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     pwave = 23  # physical
     ewave = 28  # emotional
