@@ -44,17 +44,16 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), width=55, days=14):
     pwave = 23  # physical
     ewave = 28  # emotional
     iwave = 33  # intellectual
-    mid = math.floor(width / 2)  # middle line
+    midx = math.floor(width / 2)  # middle of output
     dates = [plot + timedelta(days=d) for d in range(-days, days + 1)]
     for d in dates:
         n = (d - birth).days  # number of days since birth
-        p = math.floor(math.sin(2 * math.pi * n / pwave) * (mid - 1)) + mid
-        e = math.floor(math.sin(2 * math.pi * n / ewave) * (mid - 1)) + mid
-        i = math.floor(math.sin(2 * math.pi * n / iwave) * (mid - 1)) + mid
-        out = list(' ' * width)
-        if d.date() == plot.date():
-            out = list('-' * width)
-        out[mid] = ':'
+        # sine models -/+ percentage for distance from middle of output
+        p = midx + math.floor(math.sin(2 * math.pi * n / pwave) * (midx - 1))
+        e = midx + math.floor(math.sin(2 * math.pi * n / ewave) * (midx - 1))
+        i = midx + math.floor(math.sin(2 * math.pi * n / iwave) * (midx - 1))
+        out = list(('-' if d.date() == plot.date() else ' ') * width)
+        out[midx] = ':'
         out[p] = '*' if p in {e, i} else 'p'
         out[e] = '*' if e in {i, p} else 'e'
         out[i] = '*' if i in {p, e} else 'i'
