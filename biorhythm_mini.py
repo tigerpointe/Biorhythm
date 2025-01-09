@@ -57,7 +57,7 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), width=55, days=14):
         out[p] = '*' if p in {e, i} else 'p'
         out[e] = '*' if e in {i, p} else 'e'
         out[i] = '*' if i in {p, e} else 'i'
-        print(d.strftime('%a %d %b'), ''.join(out))
+        print(d.strftime('%a %d %b'), ''.join(out), '{:,}'.format(n))
 
 
 if __name__ == '__main__':
