@@ -43,7 +43,7 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), width=55, days=14):
     print('\nBIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
     midx = math.floor(width / 2)  # middle of chart
-    dates = [plot + timedelta(days=d) for d in range(-days, days + 1)]
+    dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
     for d in dates:
         n = (d - birth).days  # number of days since birth
         # sine models -/+ percentages of distance from middle of chart
