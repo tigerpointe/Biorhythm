@@ -35,21 +35,21 @@ https://braintumor.org/
 https://www.cancer.org/
 """
 
-from datetime import datetime, timedelta
-import math
+from datetime import datetime as dt, timedelta as td
+from math import floor, pi, sin
 
 
-def get_bio(birth=datetime.now(), plot=datetime.now(), width=55, days=14):
+def get_bio(birth=dt.now(), plot=dt.now(), width=55, days=14):
     print('\nBIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
-    midx = math.floor(width / 2)  # middle of chart
-    dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
+    midx = floor(width / 2)  # middle of chart
+    dates = (plot + td(days=d) for d in range(-days, days + 1))
     for d in dates:
         n = (d - birth).days  # number of days since birth
         # sine models -/+ percentages of distance from middle of chart
-        p = midx + math.floor(math.sin(2 * math.pi * n / pwave) * (midx - 1))
-        e = midx + math.floor(math.sin(2 * math.pi * n / ewave) * (midx - 1))
-        i = midx + math.floor(math.sin(2 * math.pi * n / iwave) * (midx - 1))
+        p = midx + floor(sin(2 * pi * n / pwave) * (midx - 1))
+        e = midx + floor(sin(2 * pi * n / ewave) * (midx - 1))
+        i = midx + floor(sin(2 * pi * n / iwave) * (midx - 1))
         out = list(('-' if d.date() == plot.date() else ' ') * width)
         out[midx] = ':'
         out[p] = '*' if p in {e, i} else 'p'
@@ -62,5 +62,5 @@ if __name__ == '__main__':
     year = int(input('Enter your birth YEAR (0001-9999): '))
     month = int(input('Enter your birth MONTH (1-12): '))
     day = int(input('Enter your birth DAY (1-31): '))
-    get_bio(birth=datetime(year, month, day))
+    get_bio(birth=dt(year, month, day))
     input('\nPress ENTER to Continue: ')
