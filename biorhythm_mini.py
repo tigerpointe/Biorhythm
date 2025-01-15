@@ -39,7 +39,7 @@ from datetime import datetime as dt, timedelta as td
 from math import floor, pi, sin
 
 
-def get_bio(birth=dt.now(), plot=dt.now(), width=55, days=14):
+def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=14):
     print('\nBIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
     midx = floor(width / 2)  # middle of chart
@@ -55,7 +55,7 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=55, days=14):
         out[p] = '*' if p in {e, i} else 'p'
         out[e] = '*' if e in {i, p} else 'e'
         out[i] = '*' if i in {p, e} else 'i'
-        print(d.strftime('%a %d %b'), ''.join(out), '{:,}'.format(n))
+        print(d.strftime('%a %d %b %Y'), ''.join(out), '{:,}'.format(n))
 
 
 if __name__ == '__main__':
