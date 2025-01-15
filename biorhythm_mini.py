@@ -41,6 +41,7 @@ from math import floor, pi, sin
 
 def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=14):
     print('\nBIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
+    print('p=physical, e=emotional, i=intellectual for days since birth')
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
     midx = floor(width / 2)  # middle of chart
     dates = (plot + td(days=d) for d in range(-days, days + 1))
