@@ -40,23 +40,25 @@ from math import floor, pi, sin
 
 
 def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=14):
+    pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
+    width = 15 if width < 15 else width  # minimum chart width
+    midwidth = floor(width / 2)  # middle point of chart, distance to edge
     print('\nBIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     print('p=physical, e=emotional, i=intellectual for days since birth')
-    pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
-    midx = floor(width / 2)  # middle of chart
+    print('-100%', '=' * (width - 12), '+100%')  # literal lengths subtracted
     dates = (plot + td(days=d) for d in range(-days, days + 1))
     for d in dates:
         n = (d - birth).days  # number of days since birth
-        # sine models -/+ percentages of distance from middle of chart
-        p = midx + floor(sin(2 * pi * n / pwave) * (midx - 1))
-        e = midx + floor(sin(2 * pi * n / ewave) * (midx - 1))
-        i = midx + floor(sin(2 * pi * n / iwave) * (midx - 1))
+        # sine models -/+ percentages of distance from middle point of chart
+        p = midwidth + floor(sin(2 * pi * n / pwave) * (midwidth - 1))
+        e = midwidth + floor(sin(2 * pi * n / ewave) * (midwidth - 1))
+        i = midwidth + floor(sin(2 * pi * n / iwave) * (midwidth - 1))
         out = list(('-' if d.date() == plot.date() else ' ') * width)
-        out[midx] = ':'
+        out[midwidth] = ':'
         out[p] = '*' if p in {e, i} else 'p'
         out[e] = '*' if e in {i, p} else 'e'
         out[i] = '*' if i in {p, e} else 'i'
-        print(d.strftime('%a %d %b %Y'), ''.join(out), '{:,}'.format(n))
+        print(''.join(out), d.strftime('%a %d %b %Y,'), 'Day={:,}'.format(n))
 
 
 if __name__ == '__main__':
