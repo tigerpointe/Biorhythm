@@ -42,7 +42,7 @@ from math import floor, pi, sin
 
 def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
-    width = 15 if width < 15 else width  # minimum chart width value
+    width = 15 if width < 15 else width  # minimum chart width enforced
     midwidth = floor(width / 2)  # middle point of chart, distance to edge
     print('BIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     print('p=physical, e=emotional, i=intellectual for days since birth')
