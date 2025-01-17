@@ -43,7 +43,7 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=14):
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
     width = 15 if width < 15 else width  # minimum chart width
     midwidth = floor(width / 2)  # middle point of chart, distance to edge
-    print('\nBIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
+    print('BIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     print('p=physical, e=emotional, i=intellectual for days since birth')
     print('-100%', '=' * (width - 12), '+100%')  # literal lengths subtracted
     dates = (plot + td(days=d) for d in range(-days, days + 1))
