@@ -3,6 +3,7 @@
 https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 History:
 01.00 2025-Jan-01 Scott S. Initial release.
+01.01 2025-Jan-20 Scott S. Added verbose mode.
 
 MIT License
 
@@ -39,9 +40,9 @@ from datetime import datetime as dt, timedelta as td
 from math import floor, pi, sin
 
 
-def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=14):
+def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
-    width = 15 if width < 15 else width  # minimum chart width
+    width = 15 if width < 15 else width  # minimum chart width value
     midwidth = floor(width / 2)  # middle point of chart, distance to edge
     print('BIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     print('p=physical, e=emotional, i=intellectual for days since birth')
@@ -50,15 +51,21 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=14):
     for d in dates:
         n = (d - birth).days  # number of days since birth
         # sine models -/+ percentages of distance from middle point of chart
-        p = midwidth + floor(sin(2 * pi * n / pwave) * (midwidth - 1))
-        e = midwidth + floor(sin(2 * pi * n / ewave) * (midwidth - 1))
-        i = midwidth + floor(sin(2 * pi * n / iwave) * (midwidth - 1))
+        _p = sin(2 * pi * n / pwave)
+        _e = sin(2 * pi * n / ewave)
+        _i = sin(2 * pi * n / iwave)
+        p = midwidth + floor(_p * (midwidth - 1))
+        e = midwidth + floor(_e * (midwidth - 1))
+        i = midwidth + floor(_i * (midwidth - 1))
         out = list(('-' if d.date() == plot.date() else ' ') * width)
         out[midwidth] = ':'
         out[p] = '*' if p in {e, i} else 'p'
         out[e] = '*' if e in {i, p} else 'e'
         out[i] = '*' if i in {p, e} else 'i'
         print(''.join(out), d.strftime('%a %d %b %Y,'), 'Day={:,}'.format(n))
+        if verbose:
+            print(' ' * width,
+                  f'p:{_p*100:+.1f}%  e:{_e*100:+.1f}%  i:{_i*100:+.1f}%')
 
 
 if __name__ == '__main__':
