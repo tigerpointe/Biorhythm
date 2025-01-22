@@ -54,7 +54,7 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
         _p = sin(2 * pi * n / pwave)  # formula calculations
         _e = sin(2 * pi * n / ewave)
         _i = sin(2 * pi * n / iwave)
-        p = midwidth + floor(_p * (midwidth - 1))  # middle points to edges
+        p = midwidth + floor(_p * (midwidth - 1))  # middle point to edges
         e = midwidth + floor(_e * (midwidth - 1))
         i = midwidth + floor(_i * (midwidth - 1))
         out = list(('-' if d.date() == plot.date() else ' ') * width)
