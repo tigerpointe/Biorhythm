@@ -42,28 +42,28 @@ from math import floor, pi, sin
 
 def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
-    width = 15 if width < 15 else width  # minimum chart width enforced
+    width = 15 if width < 15 else width  # minimum chart width
     midwidth = floor(width / 2)  # middle point of chart, distance to edge
     print('BIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
     print('p=physical, e=emotional, i=intellectual for days since birth')
-    print('-100%', '=' * (width - 12), '+100%')  # literal lengths subtracted
+    print('-100%', '=' * (width - 12), '+100%')  # 12 for literals and spaces
     dates = (plot + td(days=d) for d in range(-days, days + 1))
-    for d in dates:
+    for d in dates:  # generator expression returns dates on demand
         n = (d - birth).days  # number of days since birth
         # sine models -/+ percentages of distance from middle point of chart
-        _p = sin(2 * pi * n / pwave)
+        _p = sin(2 * pi * n / pwave)  # formula calculations
         _e = sin(2 * pi * n / ewave)
         _i = sin(2 * pi * n / iwave)
-        p = midwidth + floor(_p * (midwidth - 1))
+        p = midwidth + floor(_p * (midwidth - 1))  # middle points to edges
         e = midwidth + floor(_e * (midwidth - 1))
         i = midwidth + floor(_i * (midwidth - 1))
         out = list(('-' if d.date() == plot.date() else ' ') * width)
         out[midwidth] = ':'
-        out[p] = '*' if p in {e, i} else 'p'
+        out[p] = '*' if p in {e, i} else 'p'  # overlapping values
         out[e] = '*' if e in {i, p} else 'e'
         out[i] = '*' if i in {p, e} else 'i'
         print(''.join(out), d.strftime('%a %d %b %Y,'), 'Day={:,}'.format(n))
-        if verbose:
+        if verbose:  # verbose outputs formatted percentages
             print(' ' * width,
                   f'p:{_p*100:+.1f}%  e:{_e*100:+.1f}%  i:{_i*100:+.1f}%')
 
