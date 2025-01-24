@@ -41,6 +41,14 @@ from math import floor, pi, sin
 
 
 def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
+    """ Plots a chart of physical, emotional, and intellectual cycles.
+    PARAMETERS:
+    birth   : birth date of the person
+    plot    : plot date of the chart
+    width   : width of the chart
+    days    : number of days to show before and after the plot date
+    verbose : flag to include the percentages
+    """
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
     width = 15 if width < 15 else width  # minimum chart width
     midwidth = floor(width / 2)  # middle point of chart, distance to edge
