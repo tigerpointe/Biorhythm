@@ -47,7 +47,7 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
     plot    : plot date of the chart
     width   : width of the chart
     days    : number of days to show before and after the plot date
-    verbose : if true, add the percentages to the chart output
+    verbose : if true, include the percentages with the chart output
     """
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
     width = 15 if width < 15 else width  # minimum chart width
