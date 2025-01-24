@@ -51,7 +51,7 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
     for d in dates:  # generator expression above returns dates on demand
         n = (d - birth).days  # number of days since birth
         # sine models -/+ percentages of distance from middle point of chart
-        _p = sin(2 * pi * n / pwave)  # formula calculations
+        _p = sin(2 * pi * n / pwave)  # published formula calculations
         _e = sin(2 * pi * n / ewave)
         _i = sin(2 * pi * n / iwave)
         p = midwidth + floor(_p * (midwidth - 1))  # middle point to edges
@@ -59,7 +59,7 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
         i = midwidth + floor(_i * (midwidth - 1))
         out = list(('-' if d.date() == plot.date() else ' ') * width)
         out[midwidth] = ':'
-        out[p] = '*' if p in {e, i} else 'p'  # overlapping values
+        out[p] = '*' if p in {e, i} else 'p'  # '*' for overlapping values
         out[e] = '*' if e in {i, p} else 'e'
         out[i] = '*' if i in {p, e} else 'i'
         print(''.join(out), d.strftime('%a %d %b %Y,'), 'Day={:,}'.format(n))
