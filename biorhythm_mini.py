@@ -56,7 +56,7 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
     print('p=physical, e=emotional, i=intellectual for days since birth')
     print('-100%', '=' * (width - 12), '+100%')  # 12 for literals and spaces
     dates = (plot + td(days=d) for d in range(-days, days + 1))
-    for d in dates:  # generator expression above returns dates on demand
+    for d in dates:  # generator expression above returns dates lazily on use
         n = (d - birth).days  # number of days since birth
         # sine models -/+ percentages of distance from middle point of chart
         _p = sin(2 * pi * n / pwave)  # published formula calculations
