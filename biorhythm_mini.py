@@ -29,6 +29,16 @@ SOFTWARE.
 
 FOR ENTERTAINMENT PURPOSES ONLY.
 
+#!/usr/bin/env python3
+# EXAMPLES FILE : Abraham Lincoln, day of the Gettysburg Address
+#                 output optimized for a command window of 80x24 characters
+from biorhythm_mini import get_bio
+from datetime import datetime
+birth, plot = datetime(1809, 2, 12), datetime(1863, 11, 19)
+get_bio(birth=birth, plot=plot, width=45, days=7, verbose=False)
+get_bio(birth=birth, plot=plot, width=45, days=0, verbose=True)
+input('Press ENTER to Continue: ')
+
 If you enjoy this software, please do something kind for free.
 
 Please consider giving to cancer research.
