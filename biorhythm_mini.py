@@ -29,6 +29,8 @@ SOFTWARE.
 
 FOR ENTERTAINMENT PURPOSES ONLY.
 
+If you enjoy this software, please do something kind for free.
+
 #!/usr/bin/env python3
 # EXAMPLES FILE : Abraham Lincoln, day of the Gettysburg Address
 #                 output optimized for a command window of 80x24 characters
@@ -39,7 +41,30 @@ get_bio(birth=birth, plot=plot, width=45, days=7, verbose=False)
 get_bio(birth=birth, plot=plot, width=45, days=0, verbose=True)
 input('Press ENTER to Continue: ')
 
-If you enjoy this software, please do something kind for free.
+BIORHYTHM for Birth Date: Sunday, 12 February 1809
+p=physical, e=emotional, i=intellectual for days since birth
+-100% ================================= +100%
+              i       :            p  e       Thu 12 Nov 1863, Day=19,996
+                  i   :       p         e     Fri 13 Nov 1863, Day=19,997
+                     i: p                 e   Sat 14 Nov 1863, Day=19,998
+                   p  :  i                 e  Sun 15 Nov 1863, Day=19,999
+             p        :      i            e   Mon 16 Nov 1863, Day=20,000
+        p             :          i      e     Tue 17 Nov 1863, Day=20,001
+    p                 :             i e       Wed 18 Nov 1863, Day=20,002
+--p-------------------:------------e---i----- Thu 19 Nov 1863, Day=20,003
+ p                    :        e         i    Fri 20 Nov 1863, Day=20,004
+ p                    :   e               i   Sat 21 Nov 1863, Day=20,005
+   p                  e                   i   Sun 22 Nov 1863, Day=20,006
+      p          e    :                   i   Mon 23 Nov 1863, Day=20,007
+           pe         :                  i    Tue 24 Nov 1863, Day=20,008
+        e       p     :                 i     Wed 25 Nov 1863, Day=20,009
+     e               p:              i        Thu 26 Nov 1863, Day=20,010
+BIORHYTHM for Birth Date: Sunday, 12 February 1809
+p=physical, e=emotional, i=intellectual for days since birth
+-100% ================================= +100%
+--p-------------------:------------e---i----- Thu 19 Nov 1863, Day=20,003
+                                              p:-94.2%  e:+62.3%  i:+81.5%
+Press ENTER to Continue:
 
 Please consider giving to cancer research.
 https://braintumor.org/
