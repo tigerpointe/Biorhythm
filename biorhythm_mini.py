@@ -4,6 +4,7 @@ https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 History:
 01.00 2025-Jan-01 Scott S. Initial release.
 01.01 2025-Jan-20 Scott S. Added verbose mode.
+01.02 2025-Feb-14 Scott S. Added header switch.
 
 MIT License
 
@@ -37,8 +38,11 @@ If you enjoy this software, please do something kind for free.
 from biorhythm_mini import get_bio
 from datetime import datetime
 birth, plot = datetime(1809, 2, 12), datetime(1863, 11, 19)
-get_bio(birth=birth, plot=plot, width=45, days=7, verbose=False)
-get_bio(birth=birth, plot=plot, width=45, days=0, verbose=True)
+get_bio(birth=birth, plot=plot, width=45, days=7,
+        header=True, verbose=False)
+print('Outlook for Today:')
+get_bio(birth=birth, plot=plot, width=45, days=0,
+        header=False, verbose=True)
 input('Press ENTER to Continue: ')
 
 BIORHYTHM for Birth Date: Sunday, 12 February 1809
@@ -59,9 +63,7 @@ p=physical, e=emotional, i=intellectual for days since birth
            pe         :                  i    Tue 24 Nov 1863, Day=20,008
         e       p     :                 i     Wed 25 Nov 1863, Day=20,009
      e               p:              i        Thu 26 Nov 1863, Day=20,010
-BIORHYTHM for Birth Date: Sunday, 12 February 1809
-p=physical, e=emotional, i=intellectual for days since birth
--100% ================================= +100%
+Outlook for Today:
 --p-------------------:------------e---i----- Thu 19 Nov 1863, Day=20,003
                                               p:-94.2%  e:+62.3%  i:+81.5%
 Press ENTER to Continue:
@@ -75,21 +77,24 @@ from datetime import datetime as dt, timedelta as td
 from math import floor, pi, sin
 
 
-def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7, verbose=True):
+def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7,
+            header=True, verbose=True):
     """ Plots a chart of physical, emotional, and intellectual cycles.
     PARAMETERS:
     birth   : birth date of the person
     plot    : plot date of the chart
     width   : width of the chart
     days    : number of days to show before and after the plot date
-    verbose : if true, include the percentages with the chart output
+    header  : if true, include a header with the chart output
+    verbose : if true, include the daily percentages with the chart output
     """
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
     width = 15 if width < 15 else width  # minimum chart width
     midwidth = floor(width / 2)  # middle point of chart, distance to edge
-    print('BIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
-    print('p=physical, e=emotional, i=intellectual for days since birth')
-    print('-100%', '=' * (width - 12), '+100%')  # 12 for literals and spaces
+    if header:
+        print('BIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
+        print('p=physical, e=emotional, i=intellectual for days since birth')
+        print('-100%', '=' * (width - 12), '+100%')  # 12 for literals/spaces
     dates = (plot + td(days=d) for d in range(-days, days + 1))
     for d in dates:  # generator expression above yields dates lazily as used
         n = (d - birth).days  # number of days since birth
