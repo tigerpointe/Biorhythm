@@ -66,8 +66,8 @@ p=physical, e=emotional, i=intellectual, a=average for days since birth
      e               *:              i        Thu 26 Nov 1863, Day=20,010
 Outlook for Today:
 --p-------------------:--a---------e---i----- Thu 19 Nov 1863, Day=20,003
-                                              p:-94.2%  e:+62.3%  i:+81.5%
-                                              average:+16.5%
+                                                p:-94.2% e:+62.3% i:+81.5%
+                                                average:+16.5%
 Press ENTER to Continue:
 
 If you enjoy this software, please do something kind for free.
@@ -128,9 +128,9 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7,
               file=file, flush=flush)
         if verbose:  # verbose outputs formatted percentages
             print(' ' * width,
-                  f'p:{_p*100:+.1f}%  e:{_e*100:+.1f}%  i:{_i*100:+.1f}%',
+                  f'  p:{_p*100:+.1f}% e:{_e*100:+.1f}% i:{_i*100:+.1f}%',
                   file=file, flush=flush)
-            print(' ' * width, f'average:{_a*100:+.1f}%',
+            print(' ' * width, f'  average:{_a*100:+.1f}%',
                   file=file, flush=flush)
 
 
@@ -140,10 +140,10 @@ if __name__ == '__main__':
     day = int(input('Enter your birth DAY (1-31): '))
     birth = dt(year, month, day)
     filename = birth.strftime('mybio.%Y.%m.%d.txt')
-    with open(filename, 'w') as file:  # print to file instead of console
+    with open(filename, 'w') as file:  # prints to file instead of console
         get_bio(birth=birth, file=file)
-    with open(filename, 'r') as file:  # echo completed file back to console
+    with open(filename, 'r') as file:  # echoes file content to console
         for line in file:
-            print(line, end='')  # read line already includes '\n'
+            print(line, end='')  # read line already ends with '\n'
     print('\nBIORHYTHM saved to file:', filename)
     input('Press ENTER to Continue: ')
