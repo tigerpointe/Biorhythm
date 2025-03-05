@@ -149,6 +149,6 @@ if __name__ == '__main__':  # module can be imported or started interactively
         get_bio(birth=birth, days=days, verbose=verbose, file=file)
     with open(filename, 'r') as file:  # echoes file content to console
         for line in file:
-            print(line, end='')  # read line already ends with '\n'
+            print(line, end='')  # read lines already end with '\n'
     print('\nBIORHYTHM saved to file:', filename)
     input('Press ENTER to Continue: ')
