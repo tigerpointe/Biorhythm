@@ -139,10 +139,10 @@ if __name__ == '__main__':  # module can be imported or started interactively
     year = int(input('Enter your birth YEAR (0001-9999): '))
     month = int(input('Enter your birth MONTH (1-12): '))
     day = int(input('Enter your birth DAY (1-31): '))
-    prompt = ''
-    while prompt not in {'y', 'n'}:
-        prompt = input('Enable verbosity? (Y|N): ').lower()
-    days, verbose = (7, True) if prompt == 'y' else (14, False)
+    answer = ''
+    while answer not in {'y', 'n'}:
+        answer = input('Enable verbosity? (Y|N): ').lower()
+    days, verbose = (7, True) if answer == 'y' else (14, False)
     birth = dt(year, month, day)
     filename = birth.strftime('mybio.%Y.%m.%d.txt')
     with open(filename, 'w') as file:  # prints to file instead of console
