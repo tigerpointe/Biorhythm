@@ -1,12 +1,14 @@
 ﻿#!/usr/bin/env python3
 """ A minimalist Python module for generating a biorhythm chart.
 https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
+
 History:
 01.00 2025-Jan-01 Scott S. Initial release.
 01.01 2025-Jan-20 Scott S. Added verbose mode.
 01.02 2025-Feb-14 Scott S. Added header switch.
 01.03 2025-Feb-28 Scott S. Added print to file, averages.
 01.04 2025-Mar-17 Scott S. Added interactive prompts.
+01.05 2025-Apr-01 Scott S. Added more interactive prompts.
 
 MIT License
 
@@ -139,16 +141,24 @@ if __name__ == '__main__':  # module can be imported or started interactively
     year = int(input('Enter your birth YEAR (0001-9999): '))
     month = int(input('Enter your birth MONTH (1-12): '))
     day = int(input('Enter your birth DAY (1-31): '))
+    birth = dt(year, month, day)
     answer = ''
     while answer not in {'y', 'n'}:
         answer = input('Enable verbosity? (Y|N): ').lower()
     days, verbose = (7, True) if answer == 'y' else (14, False)
-    birth = dt(year, month, day)
-    filename = birth.strftime('mybio.%Y.%m.%d.txt')
-    with open(filename, 'w') as file:  # prints to file instead of console
-        get_bio(birth=birth, days=days, verbose=verbose, file=file)
-    with open(filename, 'r') as file:  # echoes file content to console
-        for line in file:
-            print(line, end='')  # read lines already end with '\n'
-    print('\nBIORHYTHM saved to file:', filename)
+    answer = ''
+    while answer not in {'y', 'n'}:
+        answer = input('Save to file? (Y|N): ').lower()
+    filename = birth.strftime('mybio.%Y.%m.%d.txt') if answer == 'y' else ''
+    print()
+    if filename == '':
+        get_bio(birth=birth, days=days, verbose=verbose)  # prints to console
+        print()
+    else:
+        with open(filename, 'w') as file:  # prints to file
+            get_bio(birth=birth, days=days, verbose=verbose, file=file)
+        with open(filename, 'r') as file:  # echoes content to console
+            for line in file:
+                print(line, end='')  # read lines already end with '\n'
+        print('\nBIORHYTHM saved to file:', filename)
     input('Press ENTER to Continue: ')
