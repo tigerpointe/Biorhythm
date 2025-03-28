@@ -90,7 +90,7 @@ for month in range(1, 13):  # for months 1 to 12
     with open(filename, 'w') as file:
         print(plot.strftime('%B %Y: ').upper(), end='', file=file)
         get_bio(birth=birth, plot=plot, days=21, verbose=False, file=file)
-        print('Saved:', filename)
+    print('Saved:', filename)
 input('Press ENTER to Continue: ')
 
 If you enjoy this software, please do something kind for free.
