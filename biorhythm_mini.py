@@ -8,7 +8,7 @@ History:
 01.02 2025-Feb-14 Scott S. Added header switch.
 01.03 2025-Feb-28 Scott S. Added print to file, averages.
 01.04 2025-Mar-17 Scott S. Added interactive prompts.
-01.05 2025-Apr-01 Scott S. Added more interactive prompts.
+01.05 2025-Apr-01 Scott S. Added more interactive prompts, samples.
 
 MIT License
 
@@ -72,6 +72,26 @@ Outlook for Today:
                                                 p:-94.2% e:+62.3% i:+81.5%
                                                 average:+16.5%
 Press ENTER to Continue:
+
+Create a custom script to generate an entire year of biorhythms.
+
+#!/usr/bin/env python3
+# SAMPLE FILE : output a full year
+from biorhythm_mini import get_bio
+from datetime import datetime
+year = int(input('Enter your birth YEAR (0001-9999): '))
+month = int(input('Enter your birth MONTH (1-12): '))
+day = int(input('Enter your birth DAY (1-31): '))
+birth = datetime(year, month, day)
+year = datetime.now().year  # current year
+for month in range(1, 13):  # for months 1 to 12
+    plot = datetime(year, month, 15)  # middle day of month
+    filename = plot.strftime('%Y.%m.mybio.txt')
+    with open(filename, 'w') as file:
+        print(plot.strftime('%B %Y: ').upper(), end='', file=file)
+        get_bio(birth=birth, plot=plot, days=21, verbose=False, file=file)
+        print('Saved:', filename)
+input('Press ENTER to Continue: ')
 
 If you enjoy this software, please do something kind for free.
 
