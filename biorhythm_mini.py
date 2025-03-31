@@ -119,7 +119,7 @@ def get_bio(birth=dt.now(), plot=dt.now(), width=45, days=7,
     flush:  : if true, commit the file output immediately without buffering
     """
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
-    width = 15 if width < 15 else width  # minimum chart width
+    width = 15 if width < 15 else width  # minimum width of chart
     midwidth = floor(width / 2)  # middle point of chart, distance to edge
     if header:
         print('BIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'),
