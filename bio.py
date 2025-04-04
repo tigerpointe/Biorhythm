@@ -30,10 +30,10 @@ from math import floor, pi, sin
 def get_bio(birth=datetime.now(), plot=datetime.now(), width=45, days=14):
     """ Plots a chart of physical, emotional, and intellectual cycles.
     PARAMETERS:
-    birth   : birth date of the person
-    plot    : plot date of the chart
-    width   : width of the chart in characters
-    days    : number of days to show before and after the plot date
+    birth : birth date of the person
+    plot  : plot date of the chart
+    width : width of the chart in characters
+    days  : number of days to show before and after the plot date
     """
     width = 15 if width < 15 else width
     midwidth = floor(width / 2)
