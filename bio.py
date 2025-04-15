@@ -37,7 +37,7 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), width=45, days=14):
     """
     width = 15 if width < 15 else width
     midwidth = floor(width / 2)
-    print('BIORHYTHM for Birth Date:', birth.strftime('%A, %d %B %Y'))
+    print('BIORHYTHM for Birth Date:', f'{birth:%A, %d %B %Y}')
     print('p=physical, e=emotional, i=intellectual for days since birth')
     print('Date', ' ' * 10, '-100%', '=' * (width - 12), '+100%', 'Day')
     dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
@@ -51,7 +51,7 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), width=45, days=14):
         out[p] = '*' if p in {e, i} else 'p'
         out[e] = '*' if e in {i, p} else 'e'
         out[i] = '*' if i in {p, e} else 'i'
-        print(d.strftime('%a %d %b %Y'), ''.join(out), f'{n:,}')
+        print(f'{d:%a %d %b %Y}', ''.join(out), f'{n:,}')
 
 
 if __name__ == '__main__':
