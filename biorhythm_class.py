@@ -105,6 +105,7 @@ class Biorhythm:
         dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
         for d in dates:  # generator expression above yields dates lazily
             n = (d - self.birth).days  # number of days since birth
+            # sine models -/+ percentages of distance from middle point of chart
             _p = sin(2 * pi * n / Biorhythm.pwave)  # published calculations
             _e = sin(2 * pi * n / Biorhythm.ewave)
             _i = sin(2 * pi * n / Biorhythm.iwave)
