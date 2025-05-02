@@ -74,11 +74,11 @@ class Biorhythm:
         """
         n = (d - self.birth).days  # number of days since birth
         # sine models -/+ percentages of distance from middle point of chart
-        p = sin(2 * pi * n / Biorhythm.pwave) * 100  # published calculations
-        e = sin(2 * pi * n / Biorhythm.ewave) * 100
-        i = sin(2 * pi * n / Biorhythm.iwave) * 100
+        p = sin(2 * pi * n / Biorhythm.pwave)  # published calculations
+        e = sin(2 * pi * n / Biorhythm.ewave)
+        i = sin(2 * pi * n / Biorhythm.iwave)
         a = (p + e + i) / 3
-        out = f'p:{p:+.1f}%  e:{e:+.1f}%  i:{i:+.1f}%  a:{a:+.1f}%'
+        out = f'p:{p:+.1%}  e:{e:+.1%}  i:{i:+.1%}  a:{a:+.1%}'
         print(f'{label: >15}',  # right-justify label under date
               f'{out: ^{width}}',  # center output under chart
               file=file, flush=flush)
