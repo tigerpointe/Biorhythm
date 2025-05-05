@@ -4,6 +4,7 @@ https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 
 History:
 01.00 2025-Apr-15 Scott S. Initial release.
+01.01 2025-May-04 Scott S. Code optimizations.
 
 MIT License
 
@@ -63,6 +64,20 @@ class Biorhythm:
         """
         self.birth = birth
 
+    def __calculate(self, n):
+        """ Calculates the published formula values.
+        PARAMETERS:
+        n : number of days since birth
+        RETURNS:
+        The physical, emotional, intellectual, and average values
+        """
+        # sine models -/+ percentages of distance from middle point of chart
+        p = sin(2 * pi * n / Biorhythm.pwave)  # physical
+        e = sin(2 * pi * n / Biorhythm.ewave)  # emotional
+        i = sin(2 * pi * n / Biorhythm.iwave)  # intellectual
+        a = (p + e + i) / 3  # average
+        return p, e, i, a
+
     def __show_detail(self, d, label, width, file, flush):
         """ Shows the percentage details for a date.
         PARAMETERS:
@@ -73,11 +88,7 @@ class Biorhythm:
         flush : if true, commit the file output immediately without buffering
         """
         n = (d - self.birth).days  # number of days since birth
-        # sine models -/+ percentages of distance from middle point of chart
-        p = sin(2 * pi * n / Biorhythm.pwave)  # published calculations
-        e = sin(2 * pi * n / Biorhythm.ewave)
-        i = sin(2 * pi * n / Biorhythm.iwave)
-        a = (p + e + i) / 3
+        p, e, i, a = self.__calculate(n)  # percentage values
         out = f'p:{p:+.1%}  e:{e:+.1%}  i:{i:+.1%}  a:{a:+.1%}'
         print(f'{label: >15}',  # right-justify label under date
               f'{out: ^{width}}',  # center output under chart
@@ -105,11 +116,7 @@ class Biorhythm:
         dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
         for d in dates:  # generator expression above yields dates lazily
             n = (d - self.birth).days  # number of days since birth
-            # sine models -/+ percentages of distance from middle point of chart
-            _p = sin(2 * pi * n / Biorhythm.pwave)  # published calculations
-            _e = sin(2 * pi * n / Biorhythm.ewave)
-            _i = sin(2 * pi * n / Biorhythm.iwave)
-            _a = (_p + _e + _i) / 3
+            _p, _e, _i, _a = self.__calculate(n)  # percentage values
             p = midwidth + floor(_p * (midwidth - 1))  # middle point to edges
             e = midwidth + floor(_e * (midwidth - 1))
             i = midwidth + floor(_i * (midwidth - 1))
