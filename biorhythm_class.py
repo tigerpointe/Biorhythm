@@ -82,8 +82,8 @@ class Biorhythm:
         """ Shows the percentage details for a date.
         PARAMETERS:
         d     : date for which to show the percentage details
-        label : label text for the date (15 characters or less)
-        width : width of the chart in characters (for centering)
+        label : label text for the date (15 characters or less recommended)
+        width : width of the chart in characters (for centering output)
         file  : object with a write method, such as the console or a file
         flush : if true, commit the file output immediately without buffering
         """
@@ -132,6 +132,19 @@ class Biorhythm:
         if detail:  # detail outputs percentages for plot date
             self.__show_detail(d=plot, label='Outlook Today', width=width,
                                file=file, flush=flush)
+
+    @classmethod
+    def from_ymd(cls, year=datetime.now().year, month=datetime.now().month,
+                 day=datetime.now().day):
+        """ Initializes a chart from a year, month, and day.
+        PARAMETERS:
+        year  : birth year of the person
+        month : birth month of the person
+        day   : birth day of the person
+        RETURNS:
+        An instance of the class
+        """
+        return cls(birth=datetime(year, month, day))
 
     def print(self, plot=datetime.now(), width=45, days=14):
         """ Prints a chart to the console.
