@@ -28,16 +28,16 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+FOR ENTERTAINMENT PURPOSES ONLY.
+
 Create a custom script to generate an entire year of biorhythms.
 
 #!/usr/bin/env python3
 from biorhythm_class import Biorhythm
-from datetime import datetime
 year = int(input('Enter your birth YEAR (0001-9999): '))
 month = int(input('Enter your birth MONTH (1-12): '))
 day = int(input('Enter your birth DAY (1-31): '))
-bio = Biorhythm(birth=datetime(year, month, day))
-bio.write_year()
+Biorhythm.from_ymd(year, month, day).write_year()
 input('Press ENTER to Continue: ')
 
 If you enjoy this software, please do something kind for free.
@@ -78,21 +78,16 @@ class Biorhythm:
         a = (p + e + i) / 3  # average
         return p, e, i, a
 
-    def __show_detail(self, d, label, width, file, flush):
-        """ Shows the percentage details for a date.
+    def __get_detail(self, d):
+        """ Gets the percentage details for a date.
         PARAMETERS:
-        d     : date for which to show the percentage details
-        label : label text for the date (15 characters or less recommended)
-        width : width of the chart in characters (for centering output)
-        file  : object with a write method, such as the console or a file
-        flush : if true, commit the file output immediately without buffering
+        d : date for which to get the percentage details
+        RETURNS:
+        The percentage details
         """
         n = (d - self.birth).days  # number of days since birth
-        p, e, i, a = self.__calculate(n)  # percentage values
-        out = f'p:{p:+.1%}  e:{e:+.1%}  i:{i:+.1%}  a:{a:+.1%}'
-        print(f'{label: >15}',  # right-justify label under date
-              f'{out: ^{width}}',  # center output under chart
-              file=file, flush=flush)
+        p, e, i, a = self.__calculate(n=n)  # percentage values
+        return f'p:{p:+.1%}, e:{e:+.1%}, i:{i:+.1%}, a:{a:+.1%}'
 
     def __plot(self, plot, width, days, detail, file, flush):
         """ Plots a chart of physical, emotional, and intellectual cycles.
@@ -104,19 +99,24 @@ class Biorhythm:
         file   : object with a write method, such as the console or a file
         flush  : if true, commit the file output immediately without buffering
         """
-        width = 15 if width < 15 else width  # minimum width of chart
+        width = 25 if width < 25 else width  # minimum width of chart
         midwidth = floor(width / 2)  # middle point of chart, distance to edge
         print('BIORHYTHM for Birth Date:', f'{self.birth:%A, %d %B %Y}',
               file=file, flush=flush)
         print('p=physical, e=emotional, i=intellectual, a=average',
               'for days since birth',
               file=file, flush=flush)
-        print('Date', ' ' * 10, '-100%', '=' * (width - 12), '+100%', 'Day',
+        print(' ' * 15,  # pad to date width
+              f'{"PASSIVE  CRITICAL  ACTIVE": ^{width}}',  # center over chart
+              file=file, flush=flush)
+        print('Date', ' ' * 10,  # pad to date width
+              '-100%', '=' * (width - 12), '+100%',  # dynamic chart width
+              'Day',  # left-justify
               file=file, flush=flush)
         dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
         for d in dates:  # generator expression above yields dates lazily
             n = (d - self.birth).days  # number of days since birth
-            _p, _e, _i, _a = self.__calculate(n)  # percentage values
+            _p, _e, _i, _a = self.__calculate(n=n)  # percentage values
             p = midwidth + floor(_p * (midwidth - 1))  # middle point to edges
             e = midwidth + floor(_e * (midwidth - 1))
             i = midwidth + floor(_i * (midwidth - 1))
@@ -130,13 +130,23 @@ class Biorhythm:
             print(f'{d:%a %d %b %Y}', ''.join(out), f'{n:,}',
                   file=file, flush=flush)
         if detail:  # detail outputs percentages for plot date
-            self.__show_detail(d=plot, label='Outlook Today', width=width,
-                               file=file, flush=flush)
+            out = self.__get_detail(d=plot)
+            print(f'{"Outlook Today": >15}',  # right-justify to date width
+                  f'{out: ^{width}}',  # center under chart
+                  file=file, flush=flush)
+
+    def __repr__(self):
+        """ Returns a formal string representation."""
+        return f'{type(self).__name__}(birth={self.birth.__repr__()})'
+
+    def __str__(self):
+        """ Returns an informal string representation."""
+        return f'{self.birth.__str__()} {self.__get_detail(d=datetime.now())}'
 
     @classmethod
     def from_ymd(cls, year=datetime.now().year, month=datetime.now().month,
                  day=datetime.now().day):
-        """ Initializes a chart from a year, month, and day.
+        """ Initializes a chart from the year, month, and day.
         PARAMETERS:
         year  : birth year of the person
         month : birth month of the person
