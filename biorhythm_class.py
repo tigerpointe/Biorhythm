@@ -110,7 +110,7 @@ class Biorhythm:
               f'{"PASSIVE  CRITICAL  ACTIVE": ^{width}}',  # center over chart
               file=file, flush=flush)
         print('Date', ' ' * 10,  # pad to date width
-              '-100%', '=' * (width - 12), '+100%',  # dynamic chart width
+              '-100%', '=' * (width - 12), '+100%',  # 12 for literals/spaces
               'Day',  # left-justify
               file=file, flush=flush)
         dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
