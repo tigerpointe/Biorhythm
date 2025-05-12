@@ -5,6 +5,7 @@ https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 History:
 01.00 2025-Apr-15 Scott S. Initial release.
 01.01 2025-May-04 Scott S. Code optimizations.
+01.02 2025-May-26 Scott S. Chart layout, magic methods.
 
 MIT License
 
@@ -46,7 +47,6 @@ Please consider giving to cancer research.
 https://braintumor.org/
 https://www.cancer.org/
 """
-
 from datetime import datetime, timedelta
 from math import floor, pi, sin
 import sys
@@ -106,12 +106,13 @@ class Biorhythm:
         print('p=physical, e=emotional, i=intellectual, a=average',
               'for days since birth',
               file=file, flush=flush)
-        print(' ' * 15,  # pad to date width
+        print(f'{"    ": <15}',  # left-justify date width
               f'{"PASSIVE  CRITICAL  ACTIVE": ^{width}}',  # center over chart
+              f'{"   ": >10}',  # right-justify day width
               file=file, flush=flush)
-        print('Date', ' ' * 10,  # pad to date width
-              '-100%', '=' * (width - 12), '+100%',  # 12 for literals/spaces
-              'Day',  # left-justify
+        print(f'{"Date": <15}',  # left-justify date width
+              f'-100% {"=" * (width - 12)} +100%',  # 12 for literals/spaces
+              f'{"Day": >10}',  # right-justify day width
               file=file, flush=flush)
         dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
         for d in dates:  # generator expression above yields dates lazily
@@ -127,13 +128,17 @@ class Biorhythm:
             out[e] = '*' if e in {i, a, p} else 'e'
             out[i] = '*' if i in {a, p, e} else 'i'
             out[a] = '*' if a in {p, e, i} else 'a'
-            print(f'{d:%a %d %b %Y}', ''.join(out), f'{n:,}',
+            print(f'{d:%a %d %b %Y}',  # formatted date
+                  ''.join(out),  # chart output
+                  f'{n: >10,}',  # right-justify day width, commas
                   file=file, flush=flush)
         if detail:  # detail outputs percentages for plot date
             out = self.__get_detail(d=plot)
-            print(f'{"Outlook Today": >15}',  # right-justify to date width
-                  f'{out: ^{width}}',  # center under chart
-                  file=file, flush=flush)
+            if len(out) <= width:  # check for fit
+                print(f'{"Outlook Today": >15}',  # right-justify date width
+                      f'{out: ^{width}}',  # center under chart
+                      f'{"   ": >10}',  # right-justify day width
+                      file=file, flush=flush)
 
     def __repr__(self):
         """ Returns a formal string representation."""
