@@ -31,7 +31,7 @@ SOFTWARE.
 
 FOR ENTERTAINMENT PURPOSES ONLY.
 
-Create a custom script to generate an entire year of biorhythms.
+Create a custom script to generate an entire year of biorhythm files.
 
 #!/usr/bin/env python3
 from biorhythm_class import Biorhythm
@@ -106,9 +106,9 @@ class Biorhythm:
         print('p=physical, e=emotional, i=intellectual, a=average',
               'for days since birth',
               file=file, flush=flush)
-        print(f'{"    ": <15}',  # left-justify date width
+        print(f'{" ": <15}',  # left-justify date width
               f'{"PASSIVE  CRITICAL  ACTIVE": ^{width}}',  # center over chart
-              f'{"   ": >10}',  # right-justify day width
+              f'{" ": >10}',  # right-justify day width
               file=file, flush=flush)
         print(f'{"Date": <15}',  # left-justify date width
               f'-100% {"=" * (width - 12)} +100%',  # 12 for literals/spaces
@@ -137,7 +137,7 @@ class Biorhythm:
             if len(out) <= width:  # check for fit
                 print(f'{"Outlook Today": >15}',  # right-justify date width
                       f'{out: ^{width}}',  # center under chart
-                      f'{"   ": >10}',  # right-justify day width
+                      f'{" ": >10}',  # right-justify day width
                       file=file, flush=flush)
 
     def __repr__(self):
