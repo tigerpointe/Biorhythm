@@ -53,9 +53,15 @@ import sys
 
 
 class Biorhythm:
-    """ A class for generating a biorhythm chart."""
-
+    """ A class for generating a biorhythm chart.
+    ATTRIBUTES:
+    pwave : number of days for the physical cycle
+    ewave : number of days for the emotional cycle
+    iwave : number of days for the intellectual cycle
+    flush : if true, commit the file output immediately without buffering
+    """
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
+    flush = False  # true flushes output, false buffers output
 
     def __init__(self, birth=datetime.now()):
         """ Initializes a chart.
@@ -169,7 +175,7 @@ class Biorhythm:
         days  : number of days to show before and after the plot date
         """
         self.__plot(plot=plot, width=width, days=days, detail=True,
-                    file=sys.stdout, flush=False)
+                    file=sys.stdout, flush=Biorhythm.flush)
 
     def write(self, plot=datetime.now(), width=45, days=14, echo=False):
         """ Writes a chart to a file.
@@ -184,7 +190,7 @@ class Biorhythm:
         filename = f'{self.birth:mybio.%Y.%m.%d.txt}'
         with open(filename, 'w') as file:
             self.__plot(plot=plot, width=width, days=days, detail=True,
-                        file=file, flush=False)
+                        file=file, flush=Biorhythm.flush)
         if echo:  # echo outputs file content to console
             with open(filename, 'r') as file:
                 for line in file:
@@ -203,20 +209,21 @@ class Biorhythm:
             filename = f'{plot:%Y.%m.mybio.txt}'
             with open(filename, 'w') as file:
                 print((f'{plot:%B %Y} ').upper(), end='',  # extra header
-                      file=file, flush=False)
+                      file=file, flush=Biorhythm.flush)
                 self.__plot(plot=plot, width=width, days=21, detail=False,
-                            file=file, flush=False)
+                            file=file, flush=Biorhythm.flush)
             print('Saved:', filename)
 
 
-if __name__ == '__main__':
-    year = int(input('Enter your birth YEAR (0001-9999): '))
-    month = int(input('Enter your birth MONTH (1-12): '))
-    day = int(input('Enter your birth DAY (1-31): '))
+if __name__ == '__main__':  # module can be imported or started interactively
+    print('BIORHYTHM:')
+    year = int(input('  Enter your birth YEAR (0001-9999): '))
+    month = int(input('  Enter your birth MONTH (1-12): '))
+    day = int(input('  Enter your birth DAY (1-31): '))
     bio = Biorhythm(birth=datetime(year, month, day))
     answer = ''
     while answer not in {'y', 'n'}:
-        answer = input('Save to file? (Y|N): ').lower()
+        answer = input('  Save to file? (Y|N): ').lower()
     if answer == 'y':
         bio.write(echo=True)
     else:
