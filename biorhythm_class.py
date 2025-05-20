@@ -55,12 +55,14 @@ import sys
 class Biorhythm:
     """ A class for generating a biorhythm chart.
     ATTRIBUTES:
-    pwave : number of days for the physical cycle
-    ewave : number of days for the emotional cycle
-    iwave : number of days for the intellectual cycle
-    flush : if true, commit the file output immediately without buffering
+    pwave    : number of days for the physical cycle
+    ewave    : number of days for the emotional cycle
+    iwave    : number of days for the intellectual cycle
+    encoding : output file character encoding
+    flush    : if true, commit the file output immediately without buffering
     """
     pwave, ewave, iwave = 23, 28, 33  # physical, emotional, intellectual
+    encoding = 'utf_8'  # all languages
     flush = False  # true flushes output, false buffers output
 
     def __init__(self, birth=datetime.now()):
@@ -188,11 +190,11 @@ class Biorhythm:
         The file name of the chart
         """
         filename = f'{self.birth:mybio.%Y.%m.%d.txt}'
-        with open(filename, 'w') as file:
+        with open(filename, 'w', encoding=Biorhythm.encoding) as file:
             self.__plot(plot=plot, width=width, days=days, detail=True,
                         file=file, flush=Biorhythm.flush)
         if echo:  # echo outputs file content to console
-            with open(filename, 'r') as file:
+            with open(filename, 'r', encoding=Biorhythm.encoding) as file:
                 for line in file:
                     print(line, end='')  # read lines already end with '\n'
         print('BIORHYTHM saved to file:', filename)
@@ -207,7 +209,7 @@ class Biorhythm:
         for month in range(1, 13):  # for months 1 to 12
             plot = datetime(year, month, 15)  # middle day of month
             filename = f'{plot:%Y.%m.mybio.txt}'
-            with open(filename, 'w') as file:
+            with open(filename, 'w', encoding=Biorhythm.encoding) as file:
                 print((f'{plot:%B %Y} ').upper(), end='',  # extra header
                       file=file, flush=Biorhythm.flush)
                 self.__plot(plot=plot, width=width, days=21, detail=False,
