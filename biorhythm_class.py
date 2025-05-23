@@ -86,6 +86,15 @@ class Biorhythm:
         a = (p + e + i) / 3  # average
         return p, e, i, a
 
+    def __get_days(self, d):
+        """ Gets the number of days since birth for a date.
+        PARAMETERS:
+        d : date for which to get the number of days since birth
+        RETURNS:
+        The number of days since birth
+        """
+        return (d - self.birth).days
+
     def __get_detail(self, d):
         """ Gets the percentage details for a date.
         PARAMETERS:
@@ -93,7 +102,7 @@ class Biorhythm:
         RETURNS:
         The percentage details
         """
-        n = (d - self.birth).days  # number of days since birth
+        n = self.__get_days(d)  # number of days since birth
         p, e, i, a = self.__calculate(n=n)  # percentage values
         return f'p:{p:+.1%}, e:{e:+.1%}, i:{i:+.1%}, a:{a:+.1%}'
 
@@ -124,7 +133,7 @@ class Biorhythm:
               file=file, flush=flush)
         dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
         for d in dates:  # generator expression above yields dates lazily
-            n = (d - self.birth).days  # number of days since birth
+            n = self.__get_days(d)  # number of days since birth
             _p, _e, _i, _a = self.__calculate(n=n)  # percentage values
             p = midwidth + floor(_p * (midwidth - 1))  # middle point to edges
             e = midwidth + floor(_e * (midwidth - 1))
@@ -138,7 +147,7 @@ class Biorhythm:
             out[a] = '*' if a in {p, e, i} else 'a'
             print(f'{d:%a %d %b %Y}',  # formatted date
                   ''.join(out),  # chart output
-                  f'{n: >10,}',  # right-justify day width, commas
+                  f'{n: >10,}',  # right-justify day width, add commas
                   file=file, flush=flush)
         if detail:  # detail outputs percentages for plot date
             out = self.__get_detail(d=plot)
@@ -154,7 +163,9 @@ class Biorhythm:
 
     def __str__(self):
         """ Returns an informal string representation."""
-        return f'{self.birth.__str__()} {self.__get_detail(d=datetime.now())}'
+        d = datetime.now()
+        n = self.__get_days(d=d)
+        return f'Day:{n:,} [ {self.__get_detail(d=d)} ]'  # add commas
 
     @classmethod
     def from_ymd(cls, year=datetime.now().year, month=datetime.now().month,
