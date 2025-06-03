@@ -1,11 +1,14 @@
 ﻿#!/usr/bin/env python3
 """ A Python module for generating a biorhythm chart (Class Version).
+
+More information on biorhythms:
 https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 
 History:
 01.00 2025-Apr-15 Scott S. Initial release.
 01.01 2025-May-04 Scott S. Code optimizations.
 01.02 2025-May-26 Scott S. Chart layout, magic methods.
+01.03 2025-Jun-17 Scott S. Code optimizations.
 
 MIT License
 
@@ -102,7 +105,7 @@ class Biorhythm:
         RETURNS:
         The percentage details
         """
-        n = self.__get_days(d)  # number of days since birth
+        n = self.__get_days(d=d)  # number of days since birth
         p, e, i, a = self.__calculate(n=n)  # percentage values
         return f'p:{p:+.1%}, e:{e:+.1%}, i:{i:+.1%}, a:{a:+.1%}'
 
@@ -133,7 +136,7 @@ class Biorhythm:
               file=file, flush=flush)
         dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
         for d in dates:  # generator expression above yields dates lazily
-            n = self.__get_days(d)  # number of days since birth
+            n = self.__get_days(d=d)  # number of days since birth
             _p, _e, _i, _a = self.__calculate(n=n)  # percentage values
             p = midwidth + floor(_p * (midwidth - 1))  # middle point to edges
             e = midwidth + floor(_e * (midwidth - 1))
@@ -147,7 +150,7 @@ class Biorhythm:
             out[a] = '*' if a in {p, e, i} else 'a'
             print(f'{d:%a %d %b %Y}',  # formatted date
                   ''.join(out),  # chart output
-                  f'{n: >10,}',  # right-justify day width, add commas
+                  f'{n: >10,}',  # right-justify day width, commas
                   file=file, flush=flush)
         if detail:  # detail outputs percentages for plot date
             out = self.__get_detail(d=plot)
@@ -165,12 +168,13 @@ class Biorhythm:
         """ Returns an informal string representation."""
         d = datetime.now()
         n = self.__get_days(d=d)
-        return f'Day:{n:,} [ {self.__get_detail(d=d)} ]'  # add commas
+        out = self.__get_detail(d=d)
+        return f'{d:%Y-%b-%d} Day:{n:,} [ {out} ]'  # formatted date, commas
 
     @classmethod
     def from_ymd(cls, year=datetime.now().year, month=datetime.now().month,
                  day=datetime.now().day):
-        """ Initializes a chart from the year, month, and day.
+        """ Initializes a chart from the birth year, month, and day.
         PARAMETERS:
         year  : birth year of the person
         month : birth month of the person
