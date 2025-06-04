@@ -8,7 +8,7 @@ History:
 01.00 2025-Apr-15 Scott S. Initial release.
 01.01 2025-May-04 Scott S. Code optimizations.
 01.02 2025-May-26 Scott S. Chart layout, magic methods.
-01.03 2025-Jun-17 Scott S. Code optimizations.
+01.03 2025-Jun-17 Scott S. Code optimizations, json.
 
 MIT License
 
@@ -52,6 +52,7 @@ https://www.cancer.org/
 """
 from datetime import datetime, timedelta
 from math import floor, pi, sin
+import json
 import sys
 
 
@@ -118,7 +119,7 @@ class Biorhythm:
         """
         n = self.__get_days(d=d)  # number of days since birth
         out = self.__get_detail(d=d)  # percentage details
-        return f'{d:%Y-%m-%d} Day:{n:,} [ {out} ]'  # formatted date, commas
+        return f'{d:%Y-%b-%d} Day:{n:,} [ {out} ]'  # formatted date, commas
 
     def __plot(self, plot, width, days, detail, file, flush):
         """ Plots a chart of physical, emotional, and intellectual cycles.
@@ -191,6 +192,26 @@ class Biorhythm:
         An instance of the class
         """
         return cls(birth=datetime(year, month, day))
+
+    def json(self, plot=datetime.now()):
+        """ Returns the JSON data for a plot date.
+        PARAMETERS:
+        plot : plot date for which to return the JSON data.
+        RETURNS:
+        The JSON data 
+        """
+        n = self.__get_days(d=plot)  # number of days since birth
+        p, e, i, a = self.__calculate(n=n)  # percentage values
+        obj = {}  # dictionary object
+        obj["birth"] = f'{self.birth:%Y-%m-%d}'  # formatted date
+        obj["plot"] = f'{plot:%Y-%m-%d}'  # formatted date
+        obj["day"] = n
+        obj["cycles"] = cycles = {}  # nested dictionary object
+        cycles["p"] = p
+        cycles["e"] = e
+        cycles["i"] = i
+        cycles["a"] = a
+        return json.dumps(obj)
 
     def print(self, plot=datetime.now(), width=45, days=14):
         """ Prints a chart to the console.
