@@ -1,6 +1,8 @@
 ﻿#!/usr/bin/env python3
 """ A Python module for generating a biorhythm chart (Class Version).
 
+Plots a chart of physical, emotional, and intellectual cycles.
+
 More information on biorhythms:
 https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 
