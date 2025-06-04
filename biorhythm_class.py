@@ -113,9 +113,9 @@ class Biorhythm:
     def __get_line(self, d):
         """ Gets the reporting line for a date.
         PARAMETERS:
-        d : date for which to get the reporting line.
+        d : date for which to get the reporting line
         RETURNS:
-        The reporting line.
+        The reporting line
         """
         n = self.__get_days(d=d)  # number of days since birth
         out = self.__get_detail(d=d)  # percentage details
@@ -196,7 +196,7 @@ class Biorhythm:
     def json(self, plot=datetime.now()):
         """ Returns the JSON data for a plot date.
         PARAMETERS:
-        plot : plot date for which to return the JSON data.
+        plot : plot date for which to return the JSON data
         RETURNS:
         The JSON data 
         """
