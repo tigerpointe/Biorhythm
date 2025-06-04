@@ -109,6 +109,17 @@ class Biorhythm:
         p, e, i, a = self.__calculate(n=n)  # percentage values
         return f'p:{p:+.1%}, e:{e:+.1%}, i:{i:+.1%}, a:{a:+.1%}'
 
+    def __get_line(self, d):
+        """ Gets the reporting line for a date.
+        PARAMETERS:
+        d : date for which to get the reporting line.
+        RETURNS:
+        The reporting line.
+        """
+        n = self.__get_days(d=d)  # number of days since birth
+        out = self.__get_detail(d=d)  # percentage details
+        return f'{d:%Y-%m-%d} Day:{n:,} [ {out} ]'  # formatted date, commas
+
     def __plot(self, plot, width, days, detail, file, flush):
         """ Plots a chart of physical, emotional, and intellectual cycles.
         PARAMETERS:
@@ -153,7 +164,7 @@ class Biorhythm:
                   f'{n: >10,}',  # right-justify day width, commas
                   file=file, flush=flush)
         if detail:  # detail outputs percentages for plot date
-            out = self.__get_detail(d=plot)
+            out = self.__get_detail(d=plot)  # percentage details
             if len(out) <= width:  # check for fit
                 print(f'{"Outlook Today": >15}',  # right-justify date width
                       f'{out: ^{width}}',  # center under chart
@@ -166,10 +177,7 @@ class Biorhythm:
 
     def __str__(self):
         """ Returns an informal string representation."""
-        d = datetime.now()
-        n = self.__get_days(d=d)
-        out = self.__get_detail(d=d)
-        return f'{d:%Y-%b-%d} Day:{n:,} [ {out} ]'  # formatted date, commas
+        return self.__get_line(d=datetime.now())
 
     @classmethod
     def from_ymd(cls, year=datetime.now().year, month=datetime.now().month,
