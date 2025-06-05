@@ -200,7 +200,8 @@ class Biorhythm:
         PARAMETERS:
         plot : plot date for which to return the JSON data
         RETURNS:
-        The JSON data 
+        The serialized JSON data (string)
+        Very small decimal values are returned using scientific notation.
         """
         n = self.__get_days(d=plot)  # number of days since birth
         p, e, i, a = self.__calculate(n=n)  # percentage values
@@ -214,6 +215,24 @@ class Biorhythm:
         cycles["i"] = i
         cycles["a"] = a
         return json.dumps(obj, indent=4, default=str)
+
+    def load(self, data):
+        """ Returns a dictionary from the JSON data.
+        PARAMETERS:
+        data : JSON data (string)
+        RETURNS:
+        The dictionary containing deserialized JSON data
+        Complex data types are converted using a custom object hook.
+        """
+        def object_hook(dct):
+            for key, value in dct.items():
+                if key in {'birth', 'plot'}:
+                    try:
+                        dct[key] = datetime.fromisoformat(value)
+                    except:
+                        pass
+            return dct
+        return json.loads(data, object_hook=object_hook)
 
     def print(self, plot=datetime.now(), width=45, days=14):
         """ Prints a chart to the console.
