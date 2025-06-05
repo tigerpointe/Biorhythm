@@ -202,20 +202,24 @@ class Biorhythm:
         indent : number spaces to indent each JSON level
         RETURNS:
         The serialized JSON data (string)
-        Very small decimal values are returned using scientific notation.
+        Complex data types are converted using a custom default encoder.
+        Very small decimal values may be returned using scientific notation.
         """
+        def default(obj):  # custom encoder inner function
+            if isinstance(obj, datetime):
+                return obj.isoformat()  # ISO 8601 string
         n = self.__get_days(d=plot)  # number of days since birth
         p, e, i, a = self.__calculate(n=n)  # percentage values
         obj = {}  # dictionary object
-        obj["birth"] = self.birth  # datetime requires json dumps default=str
-        obj["plot"] = plot  # datetime requires json dumps default=str
+        obj["birth"] = self.birth  # datetime requires a custom encoder
+        obj["plot"] = plot  # datetime requires a custom encoder
         obj["day"] = n
         obj["cycles"] = cycles = {}  # nested dictionary object
         cycles["p"] = p
         cycles["e"] = e
         cycles["i"] = i
         cycles["a"] = a
-        return json.dumps(obj, indent=indent, default=str)
+        return json.dumps(obj, indent=indent, default=default)
 
     def load(self, data):
         """ Returns a dictionary from the JSON data.
@@ -224,8 +228,9 @@ class Biorhythm:
         RETURNS:
         The dictionary containing deserialized JSON data
         Complex data types are converted using a custom object hook.
+        Very small decimal values may be returned using scientific notation.
         """
-        def object_hook(dct):
+        def object_hook(dct):  # custom decoder inner function
             for key, value in dct.items():
                 if key in {'birth', 'plot'}:
                     try:
