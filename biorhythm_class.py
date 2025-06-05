@@ -195,10 +195,11 @@ class Biorhythm:
         """
         return cls(birth=datetime(year, month, day))
 
-    def json(self, plot=datetime.now()):
+    def json(self, plot=datetime.now(), indent=4):
         """ Returns the JSON data for a plot date.
         PARAMETERS:
-        plot : plot date for which to return the JSON data
+        plot   : plot date for which to return the JSON data
+        indent : number spaces to indent each JSON level
         RETURNS:
         The serialized JSON data (string)
         Very small decimal values are returned using scientific notation.
@@ -214,7 +215,7 @@ class Biorhythm:
         cycles["e"] = e
         cycles["i"] = i
         cycles["a"] = a
-        return json.dumps(obj, indent=4, default=str)
+        return json.dumps(obj, indent=indent, default=str)
 
     def load(self, data):
         """ Returns a dictionary from the JSON data.
