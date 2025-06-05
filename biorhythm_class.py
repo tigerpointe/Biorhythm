@@ -205,15 +205,15 @@ class Biorhythm:
         n = self.__get_days(d=plot)  # number of days since birth
         p, e, i, a = self.__calculate(n=n)  # percentage values
         obj = {}  # dictionary object
-        obj["birth"] = f'{self.birth:%Y-%m-%d}'  # formatted date
-        obj["plot"] = f'{plot:%Y-%m-%d}'  # formatted date
+        obj["birth"] = self.birth  # datetime requires json dumps default=str
+        obj["plot"] = plot  # datetime requires json dumps default=str
         obj["day"] = n
         obj["cycles"] = cycles = {}  # nested dictionary object
         cycles["p"] = p
         cycles["e"] = e
         cycles["i"] = i
         cycles["a"] = a
-        return json.dumps(obj)
+        return json.dumps(obj, indent=4, default=str)
 
     def print(self, plot=datetime.now(), width=45, days=14):
         """ Prints a chart to the console.
