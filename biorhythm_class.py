@@ -199,7 +199,7 @@ class Biorhythm:
         """ Returns the JSON data for a plot date.
         PARAMETERS:
         plot   : plot date for which to return the JSON data
-        indent : number spaces to indent each JSON level
+        indent : number spaces to indent for each JSON level
         RETURNS:
         The serialized JSON data (string)
         Complex data types are converted using a custom default encoder.
