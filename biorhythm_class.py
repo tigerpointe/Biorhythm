@@ -194,11 +194,31 @@ class Biorhythm:
         An instance of the class
         """
         return cls(birth=datetime(year, month, day))
-
-    def json(self, plot=datetime.now(), indent=4):
-        """ Returns the JSON data for a plot date.
+    
+    def datarow(self, plot=datetime.now()):
+        """ Returns the data row for a plot date.
         PARAMETERS:
-        plot   : plot date for which to return the JSON data
+        plot : plot date for which to return the data row
+        RETURNS:
+        The data row (object)
+        """
+        n = self.__get_days(d=plot)  # number of days since birth
+        p, e, i, a = self.__calculate(n=n)  # percentage values
+        obj = {}  # dictionary object
+        obj["birth"] = self.birth  # datetime requires a custom JSON encoder
+        obj["plot"] = plot  # datetime requires a custom JSON encoder
+        obj["day"] = n
+        obj["cycles"] = cycles = {}  # nested dictionary object
+        cycles["p"] = p
+        cycles["e"] = e
+        cycles["i"] = i
+        cycles["a"] = a
+        return obj
+    
+    def json(self, plot=datetime.now(), indent=4):
+        """ Returns the JSON data (string) for a plot date.
+        PARAMETERS:
+        plot   : plot date for which to return the JSON data (string)
         indent : number spaces to indent for each JSON level
         RETURNS:
         The serialized JSON data (string)
@@ -208,17 +228,7 @@ class Biorhythm:
         def default(obj):  # custom encoder inner function
             if isinstance(obj, datetime):
                 return obj.isoformat()  # ISO 8601 string
-        n = self.__get_days(d=plot)  # number of days since birth
-        p, e, i, a = self.__calculate(n=n)  # percentage values
-        obj = {}  # dictionary object
-        obj["birth"] = self.birth  # datetime requires a custom encoder
-        obj["plot"] = plot  # datetime requires a custom encoder
-        obj["day"] = n
-        obj["cycles"] = cycles = {}  # nested dictionary object
-        cycles["p"] = p
-        cycles["e"] = e
-        cycles["i"] = i
-        cycles["a"] = a
+        obj = self.datarow(plot=plot)
         return json.dumps(obj, indent=indent, default=default)
 
     def load(self, data):
