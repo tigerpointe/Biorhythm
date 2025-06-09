@@ -196,9 +196,9 @@ class Biorhythm:
         return cls(birth=datetime(year, month, day))
 
     def datarow(self, plot=datetime.now()):
-        """ Returns the data row for a plot date.
+        """ Returns the data row (object) for a plot date.
         PARAMETERS:
-        plot : plot date for which to return the data row
+        plot : plot date for which to return the data row (object)
         RETURNS:
         The data row (object)
         """
@@ -232,11 +232,11 @@ class Biorhythm:
         return json.dumps(obj, indent=indent, default=default)
 
     def load(self, data):
-        """ Returns a dictionary from the JSON data (string).
+        """ Returns a data row (object) from the JSON data (string).
         PARAMETERS:
         data : JSON data (string)
         RETURNS:
-        The dictionary containing deserialized JSON data
+        The data row (object) containing deserialized JSON data
         Complex data types are converted using a custom object hook.
         Very small decimal values may be returned using scientific notation.
         """
