@@ -194,7 +194,7 @@ class Biorhythm:
         An instance of the class
         """
         return cls(birth=datetime(year, month, day))
-    
+
     def datarow(self, plot=datetime.now()):
         """ Returns the data row for a plot date.
         PARAMETERS:
@@ -214,7 +214,7 @@ class Biorhythm:
         cycles["i"] = i
         cycles["a"] = a
         return obj
-    
+
     def json(self, plot=datetime.now(), indent=4):
         """ Returns the JSON data (string) for a plot date.
         PARAMETERS:
@@ -232,7 +232,7 @@ class Biorhythm:
         return json.dumps(obj, indent=indent, default=default)
 
     def load(self, data):
-        """ Returns a dictionary from the JSON data.
+        """ Returns a dictionary from the JSON data (string).
         PARAMETERS:
         data : JSON data (string)
         RETURNS:
