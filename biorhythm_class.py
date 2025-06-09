@@ -232,7 +232,7 @@ class Biorhythm:
         return json.dumps(obj, indent=indent, default=default)
 
     def load(self, data):
-        """ Returns the data row (object) from JSON data (string).
+        """ Returns a data row (object) from the JSON data (string).
         PARAMETERS:
         data : JSON data (string)
         RETURNS:
