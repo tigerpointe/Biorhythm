@@ -3,7 +3,10 @@
 
 Plots a chart of physical, emotional, and intellectual cycles.
 
-More information on biorhythms:
+Alternatively, the plot data can be returned as JSON (JavaScript Object
+Notation) for integration with other systems.
+
+For more information on biorhythms:
 https://en.wikipedia.org/wiki/Biorhythm_(pseudoscience)
 
 History:
@@ -205,20 +208,42 @@ class Biorhythm:
         n = self.__get_days(d=plot)  # number of days since birth
         p, e, i, a = self.__calculate(n=n)  # percentage values
         obj = {}  # dictionary object
-        obj["birth"] = self.birth  # datetime requires a custom JSON encoder
-        obj["plot"] = plot  # datetime requires a custom JSON encoder
-        obj["day"] = n
-        obj["cycles"] = cycles = {}  # nested dictionary object
-        cycles["p"] = p
-        cycles["e"] = e
-        cycles["i"] = i
-        cycles["a"] = a
+        obj['birth'] = self.birth  # datetime requires a custom JSON encoder
+        obj['plot'] = plot  # datetime requires a custom JSON encoder
+        obj['day'] = n
+        obj['cycles'] = cycles = {}  # nested dictionary object
+        cycles['p'] = p
+        cycles['e'] = e
+        cycles['i'] = i
+        cycles['a'] = a
         return obj
 
-    def json(self, plot=datetime.now(), indent=4):
-        """ Returns the JSON data (string) for a plot date.
+    def datarows(self, plot=datetime.now(), days=0):
+        """ Returns the data rows (object) for a plot date range.
+        PARAMETERS:
+        plot : plot date for which to return the data rows (object)
+        days : number of days to show before and after the plot date
+        RETURNS:
+        The data rows (object)
+        NOTES:
+        Columns can be extracted into lists using comprehensions.
+        plots = [row['plot'] for row in rows]
+        pvalues = [row['cycles']['p'] for row in rows]
+        evalues = [row['cycles']['e'] for row in rows]
+        ivalues = [row['cycles']['i'] for row in rows]
+        """
+        obj = []  # list object
+        dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
+        for d in dates:  # generator expression above yields dates lazily
+            row = self.datarow(plot=d)
+            obj.append(row)
+        return obj
+
+    def json(self, plot=datetime.now(), days=0, indent=4):
+        """ Returns the JSON data (string) for a plot date range.
         PARAMETERS:
         plot   : plot date for which to return the JSON data (string)
+        days   : number of days to show before and after the plot date
         indent : number spaces to indent for each JSON level
         RETURNS:
         The serialized JSON data (string)
@@ -228,15 +253,15 @@ class Biorhythm:
         def default(obj):  # custom encoder inner function
             if isinstance(obj, datetime):
                 return obj.isoformat()  # ISO 8601 string
-        obj = self.datarow(plot=plot)
+        obj = self.datarows(plot=plot, days=days)
         return json.dumps(obj, indent=indent, default=default)
 
     def load(self, data):
-        """ Returns a data row (object) from the JSON data (string).
+        """ Returns the data rows (object) from the JSON data (string).
         PARAMETERS:
         data : JSON data (string)
         RETURNS:
-        The data row (object) containing deserialized JSON data
+        The data rows (object) containing deserialized JSON data
         Complex data types are converted using a custom object hook.
         Very small decimal values may be returned using scientific notation.
         """
