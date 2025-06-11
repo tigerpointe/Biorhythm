@@ -253,6 +253,7 @@ class Biorhythm:
         def default(obj):  # custom encoder inner function
             if isinstance(obj, datetime):
                 return obj.isoformat()  # ISO 8601 string
+            raise TypeError('Unknown type not serializable')
         rows = self.datarows(plot=plot, days=days)
         return json.dumps(rows, indent=indent, default=default)
 
