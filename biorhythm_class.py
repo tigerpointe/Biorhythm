@@ -267,10 +267,10 @@ class Biorhythm:
         Very small decimal values may be returned using scientific notation.
         """
         def object_hook(dct):  # custom decoder inner function
-            for key, value in dct.items():
-                if key in {'birth', 'plot'}:
+            for key in {'birth', 'plot'}:
+                if key in dct:
                     try:
-                        dct[key] = datetime.fromisoformat(value)
+                        dct[key] = datetime.fromisoformat(dct[key])
                     except:
                         pass
             return dct
