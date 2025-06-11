@@ -207,16 +207,16 @@ class Biorhythm:
         """
         n = self.__get_days(d=plot)  # number of days since birth
         p, e, i, a = self.__calculate(n=n)  # percentage values
-        obj = {}  # dictionary object
-        obj['birth'] = self.birth  # datetime requires a custom JSON encoder
-        obj['plot'] = plot  # datetime requires a custom JSON encoder
-        obj['day'] = n
-        obj['cycles'] = cycles = {}  # nested dictionary object
+        row = {}  # dictionary object
+        row['birth'] = self.birth  # datetime requires a custom JSON encoder
+        row['plot'] = plot  # datetime requires a custom JSON encoder
+        row['day'] = n
+        row['cycles'] = cycles = {}  # nested dictionary object
         cycles['p'] = p
         cycles['e'] = e
         cycles['i'] = i
         cycles['a'] = a
-        return obj
+        return row
 
     def datarows(self, plot=datetime.now(), days=0):
         """ Returns the data rows (object) for a plot date range.
@@ -232,12 +232,12 @@ class Biorhythm:
         evalues = [row['cycles']['e'] for row in rows]
         ivalues = [row['cycles']['i'] for row in rows]
         """
-        obj = []  # list object
+        rows = []  # list object
         dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
         for d in dates:  # generator expression above yields dates lazily
             row = self.datarow(plot=d)
-            obj.append(row)
-        return obj
+            rows.append(row)
+        return rows
 
     def json(self, plot=datetime.now(), days=0, indent=4):
         """ Returns the JSON data (string) for a plot date range.
@@ -253,15 +253,15 @@ class Biorhythm:
         def default(obj):  # custom encoder inner function
             if isinstance(obj, datetime):
                 return obj.isoformat()  # ISO 8601 string
-        obj = self.datarows(plot=plot, days=days)
-        return json.dumps(obj, indent=indent, default=default)
+        rows = self.datarows(plot=plot, days=days)
+        return json.dumps(rows, indent=indent, default=default)
 
     def load(self, data):
         """ Returns the data rows (object) from the JSON data (string).
         PARAMETERS:
         data : JSON data (string)
         RETURNS:
-        The data rows (object) containing deserialized JSON data
+        The data rows (object) from the deserialized JSON data (string)
         Complex data types are converted using a custom object hook.
         Very small decimal values may be returned using scientific notation.
         """
