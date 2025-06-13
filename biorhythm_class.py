@@ -104,14 +104,13 @@ class Biorhythm:
         """
         return (d - self.birth).days
 
-    def __get_detail(self, d):
-        """ Gets the percentage details for a date.
+    def __get_detail(self, n):
+        """ Gets the percentage details for the number of days since birth.
         PARAMETERS:
-        d : date for which to get the percentage details
+        n : number of days since birth
         RETURNS:
         The percentage details
         """
-        n = self.__get_days(d=d)  # number of days since birth
         p, e, i, a = self.__calculate(n=n)  # percentage values
         return f'p:{p:+.1%}, e:{e:+.1%}, i:{i:+.1%}, a:{a:+.1%}'
 
@@ -123,7 +122,7 @@ class Biorhythm:
         The reporting line
         """
         n = self.__get_days(d=d)  # number of days since birth
-        out = self.__get_detail(d=d)  # percentage details
+        out = self.__get_detail(n=n)  # percentage details
         return f'{d:%Y-%b-%d} Day:{n:,} [ {out} ]'  # formatted date, commas
 
     def __plot(self, plot, width, days, detail, file, flush):
@@ -170,7 +169,8 @@ class Biorhythm:
                   f'{n: >10,}',  # right-justify day width, commas
                   file=file, flush=flush)
         if detail:  # detail outputs percentages for plot date
-            out = self.__get_detail(d=plot)  # percentage details
+            n = self.__get_days(d=plot)  # number of days since birth
+            out = self.__get_detail(n=n)  # percentage details
             if len(out) <= width:  # check for fit
                 print(f'{"Outlook Today": >15}',  # right-justify date width
                       f'{out: ^{width}}',  # center under chart
