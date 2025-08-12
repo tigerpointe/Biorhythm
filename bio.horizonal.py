@@ -36,22 +36,21 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), rows=21, days=7):
     rows  : number of rows to show for the chart height
     days  : number of days to show before and after the plot date
     """
-    rows = (rows + 1) if ((rows % 2) == 0) else rows  # force odd rows
+    rows = (rows + 1) if (rows % 2) == 0 else rows  # force odd rows
     midrow = floor(rows / 2)
     print('BIORHYTHM for Birth Date:', f'{birth:%A, %d %B %Y}')
     print('               Plot Date:', f'{plot:%A, %d %B %Y}')
     print('p=physical, e=emotional, i=intellectual for days since birth')
     data = []
-    for d in range(-days, days + 1):
-        day = plot + timedelta(days=d)  # day of calculation
-        dom = day.day  # day of month
-        n = (day - birth).days  # number of days since birth
+    dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
+    for d in dates:
+        n = (d - birth).days  # number of days since birth
         p = sin(2 * pi * n / 23)  # physical
         e = sin(2 * pi * n / 28)  # emotional
         i = sin(2 * pi * n / 33)  # intellectual
-        data.append((dom, p, e, i))  # extra parentheses appends tuple
+        data.append((d.day, p, e, i))  # extra parentheses appends tuple
     for row in range(rows):
-        label = '     '
+        label = '     '  # labels use 5 chars
         if row == 0:
             label = '+100%'
         elif row == midrow:
@@ -59,15 +58,15 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), rows=21, days=7):
         elif row == (rows - 1):
             label = '-100%'
         out = ''
-        for dom, p, e, i in data:
-            symbol = '   '
+        for day, p, e, i in data:
+            symbol = '   '  # symbols use 3 chars
             if (midrow - floor(p * midrow)) == row:
                 symbol = ' p ' if symbol == '   ' else ' * '
             if (midrow - floor(e * midrow)) == row:
                 symbol = ' e ' if symbol == '   ' else ' * '
             if (midrow - floor(i * midrow)) == row:
                 symbol = ' i ' if symbol == '   ' else ' * '
-            if dom == plot.day:
+            if day == plot.day:
                 symbol = ' : ' if symbol == '   ' else symbol
             if midrow == row:
                 symbol = ' - ' if symbol == '   ' else symbol
@@ -75,8 +74,8 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), rows=21, days=7):
         print(label, out, sep=' |')
     print('     ', '---' * (days * 2 + 1), sep=' +')
     out = ''
-    for dom, *_ in data:
-        out += f'{dom:^3}'
+    for day, *_ in data:
+        out += f'{day:^3}'
     print('  Day', out, sep='  ')
 
 
