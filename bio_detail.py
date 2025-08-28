@@ -47,7 +47,7 @@ def get_data(birth=datetime.now(), plot=datetime.now(), days=7):
         p = sin(2 * pi * n / 23)  # physical
         e = sin(2 * pi * n / 28)  # emotional
         i = sin(2 * pi * n / 33)  # intellectual
-        data.append((d, n, p, e, i))  # extra parentheses appends tuple
+        data.append((d, n, p, e, i))  # extra parentheses, appends tuple
     return data
 
 
