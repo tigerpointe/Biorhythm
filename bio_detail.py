@@ -71,7 +71,7 @@ def plot_chart(birth=datetime.now(), plot=datetime.now(), width=25, days=7):
     data = get_data(birth=birth, plot=plot, days=days)
     for d, n, p, e, i in data:
         _p = midwidth + floor(p * (midwidth - 1))  # from middle point, add
-        _e = midwidth + floor(e * (midwidth - 1))  # percentage of width for
+        _e = midwidth + floor(e * (midwidth - 1))  # percentage width of
         _i = midwidth + floor(i * (midwidth - 1))  # farthest possible edge
         out = list(('-' if d.date() == plot.date() else ' ') * width)
         out[midwidth] = ':'
