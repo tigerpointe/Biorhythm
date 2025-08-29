@@ -70,9 +70,9 @@ def plot_chart(birth=datetime.now(), plot=datetime.now(), width=25, days=7):
           '   p   ', '   e   ', '   i   ', 'Day')
     data = get_data(birth=birth, plot=plot, days=days)
     for d, n, p, e, i in data:
-        _p = midwidth + floor(p * (midwidth - 1))  # from middle point, add
-        _e = midwidth + floor(e * (midwidth - 1))  # percentage width of
-        _i = midwidth + floor(i * (midwidth - 1))  # farthest possible edge
+        _p = midwidth + floor(p * (midwidth - 1))  # from middle zero, add
+        _e = midwidth + floor(e * (midwidth - 1))  # -/+ percentages of width
+        _i = midwidth + floor(i * (midwidth - 1))  # to reach -100% or +100%
         out = list(('-' if d.date() == plot.date() else ' ') * width)
         out[midwidth] = ':'
         out[_p] = '*' if _p in {_e, _i} else 'p'  # overlapping values
