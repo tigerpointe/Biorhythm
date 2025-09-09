@@ -25,7 +25,7 @@ SOFTWARE.
 
 Please consider giving to cancer research.
 https://braintumor.org/
-https://www.cancer.org
+https://www.cancer.org/
 """
 from datetime import datetime, timedelta
 from math import floor, pi, sin
