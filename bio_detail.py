@@ -1,6 +1,25 @@
 ﻿#!/usr/bin/env python3
 """ A Python module for generating a detailed biorhythm chart.
 
+BIORHYTHM for Birth Date: Sunday, 12 February 1809
+p=physical, e=emotional, i=intellectual for days since birth
+Date            -100% ============= +100%    p       e       i    Day
+Thu 12 Nov 1863        i    :     p e      +63.1%  +78.2%  -37.2% 19,996
+Fri 13 Nov 1863          i  :   p    e     +39.8%  +90.1%  -18.9% 19,997
+Sat 14 Nov 1863            i:p        e    +13.6%  +97.5%   -0.0% 19,998
+Sun 15 Nov 1863           p : i        e   -13.6% +100.0%  +18.9% 19,999
+Mon 16 Nov 1863        p    :   i     e    -39.8%  +97.5%  +37.2% 20,000
+Tue 17 Nov 1863      p      :    i   e     -63.1%  +90.1%  +54.1% 20,001
+Wed 18 Nov 1863    p        :      ie      -81.7%  +78.2%  +69.0% 20,002
+Thu 19 Nov 1863 -p----------:-----e-i----  -94.2%  +62.3%  +81.5% 20,003
+Fri 20 Nov 1863  p          :   e     i    -99.8%  +43.4%  +91.0% 20,004
+Sat 21 Nov 1863  p          : e       i    -97.9%  +22.3%  +97.2% 20,005
+Sun 22 Nov 1863   p         e         i    -88.8%   +0.0%  +99.9% 20,006
+Mon 23 Nov 1863    p     e  :         i    -73.1%  -22.3%  +99.0% 20,007
+Tue 24 Nov 1863       pe    :         i    -52.0%  -43.4%  +94.5% 20,008
+Wed 25 Nov 1863      e   p  :        i     -27.0%  -62.3%  +86.6% 20,009
+Thu 26 Nov 1863    e       p:       i       -0.0%  -78.2%  +75.6% 20,010
+
 MIT License
 
 Copyright (c) 2025 TigerPointe Software, LLC
