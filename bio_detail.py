@@ -79,7 +79,7 @@ def plot_chart(birth=datetime.now(), plot=datetime.now(), width=25, days=7):
     days  : number of days to show before and after the plot date
     REMARKS:
     The output is optimized for a traditional 80x24 console window.
-    The chart width and days range can be changed to fit your system.
+    The chart width and days range can be set to fit your system.
     """
     width = 15 if width < 15 else width
     midwidth = floor(width / 2)
@@ -89,12 +89,12 @@ def plot_chart(birth=datetime.now(), plot=datetime.now(), width=25, days=7):
           '   p   ', '   e   ', '   i   ', 'Day')
     data = get_data(birth=birth, plot=plot, days=days)
     for d, n, p, e, i in data:
-        _p = midwidth + floor(p * (midwidth - 1))  # from middle zero, add
+        _p = midwidth + floor(p * (midwidth - 1))  # from middle zero, adds
         _e = midwidth + floor(e * (midwidth - 1))  # -/+ percentages of width
         _i = midwidth + floor(i * (midwidth - 1))  # to reach -100% or +100%
         out = list(('-' if d.date() == plot.date() else ' ') * width)
         out[midwidth] = ':'
-        out[_p] = '*' if _p in {_e, _i} else 'p'  # overlapping values
+        out[_p] = '*' if _p in {_e, _i} else 'p'  # '*' for overlapping values
         out[_e] = '*' if _e in {_i, _p} else 'e'
         out[_i] = '*' if _i in {_p, _e} else 'i'
         print(f'{d:%a %d %b %Y}', ''.join(out),
