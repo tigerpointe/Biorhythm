@@ -23,11 +23,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-from datetime import datetime, timedelta
-from math import floor, pi, sin
+from datetime import date, timedelta
+from math import pi, sin
 
 
-def get_bio(birth=datetime.now(), plot=datetime.now(), width=45, days=14):
+def get_bio(birth=date.today(), plot=date.today(), width=45, days=14):
     """ Plots a chart of physical, emotional, and intellectual cycles.
     PARAMETERS:
     birth : birth date of the person
@@ -35,18 +35,18 @@ def get_bio(birth=datetime.now(), plot=datetime.now(), width=45, days=14):
     width : width of the chart in characters
     days  : number of days to show before and after the plot date
     """
-    width = 15 if width < 15 else width
-    midwidth = floor(width / 2)
+    width = max(15, width)
+    midwidth = width // 2
     print('BIORHYTHM for Birth Date:', f'{birth:%A, %d %B %Y}')
     print('p=physical, e=emotional, i=intellectual for days since birth')
     print('Date', ' ' * 10, '-100%', '=' * (width - 12), '+100%', 'Day')
     dates = (plot + timedelta(days=d) for d in range(-days, days + 1))
     for d in dates:
         n = (d - birth).days
-        p = midwidth + floor(sin(2 * pi * n / 23) * (midwidth - 1))
-        e = midwidth + floor(sin(2 * pi * n / 28) * (midwidth - 1))
-        i = midwidth + floor(sin(2 * pi * n / 33) * (midwidth - 1))
-        out = list(('-' if d.date() == plot.date() else ' ') * width)
+        p = midwidth + int(sin(2 * pi * n / 23) * (midwidth - 1))
+        e = midwidth + int(sin(2 * pi * n / 28) * (midwidth - 1))
+        i = midwidth + int(sin(2 * pi * n / 33) * (midwidth - 1))
+        out = ['-' if d == plot else ' '] * width
         out[midwidth] = ':'
         out[p] = '*' if p in {e, i} else 'p'
         out[e] = '*' if e in {i, p} else 'e'
@@ -58,5 +58,5 @@ if __name__ == '__main__':
     year = int(input('Enter your birth YEAR (0001-9999): '))
     month = int(input('Enter your birth MONTH (1-12): '))
     day = int(input('Enter your birth DAY (1-31): '))
-    get_bio(birth=datetime(year, month, day))
+    get_bio(birth=date(year, month, day))
     input('Press ENTER to Continue: ')

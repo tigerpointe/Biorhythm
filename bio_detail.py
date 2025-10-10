@@ -4,21 +4,21 @@
 BIORHYTHM for Birth Date: Sunday, 12 February 1809
 p=physical, e=emotional, i=intellectual for days since birth
 Date            -100% ============= +100%    p       e       i    Day
-Thu 12 Nov 1863        i    :     p e      +63.1%  +78.2%  -37.2% 19,996
-Fri 13 Nov 1863          i  :   p    e     +39.8%  +90.1%  -18.9% 19,997
-Sat 14 Nov 1863            i:p        e    +13.6%  +97.5%   -0.0% 19,998
-Sun 15 Nov 1863           p : i        e   -13.6% +100.0%  +18.9% 19,999
-Mon 16 Nov 1863        p    :   i     e    -39.8%  +97.5%  +37.2% 20,000
-Tue 17 Nov 1863      p      :    i   e     -63.1%  +90.1%  +54.1% 20,001
-Wed 18 Nov 1863    p        :      ie      -81.7%  +78.2%  +69.0% 20,002
-Thu 19 Nov 1863 -p----------:-----e-i----  -94.2%  +62.3%  +81.5% 20,003
-Fri 20 Nov 1863  p          :   e     i    -99.8%  +43.4%  +91.0% 20,004
-Sat 21 Nov 1863  p          : e       i    -97.9%  +22.3%  +97.2% 20,005
-Sun 22 Nov 1863   p         e         i    -88.8%   +0.0%  +99.9% 20,006
-Mon 23 Nov 1863    p     e  :         i    -73.1%  -22.3%  +99.0% 20,007
-Tue 24 Nov 1863       pe    :         i    -52.0%  -43.4%  +94.5% 20,008
-Wed 25 Nov 1863      e   p  :        i     -27.0%  -62.3%  +86.6% 20,009
-Thu 26 Nov 1863    e       p:       i       -0.0%  -78.2%  +75.6% 20,010
+Thu 12 Nov 1863         i   :     p e      +63.1%  +78.2%  -37.2% 19,996
+Fri 13 Nov 1863           i :   p    e     +39.8%  +90.1%  -18.9% 19,997
+Sat 14 Nov 1863             ip        e    +13.6%  +97.5%   -0.0% 19,998
+Sun 15 Nov 1863            p: i        e   -13.6% +100.0%  +18.9% 19,999
+Mon 16 Nov 1863         p   :   i     e    -39.8%  +97.5%  +37.2% 20,000
+Tue 17 Nov 1863       p     :    i   e     -63.1%  +90.1%  +54.1% 20,001
+Wed 18 Nov 1863     p       :      ie      -81.7%  +78.2%  +69.0% 20,002
+Thu 19 Nov 1863 --p---------:-----e-i----  -94.2%  +62.3%  +81.5% 20,003
+Fri 20 Nov 1863   p         :   e     i    -99.8%  +43.4%  +91.0% 20,004
+Sat 21 Nov 1863   p         : e       i    -97.9%  +22.3%  +97.2% 20,005
+Sun 22 Nov 1863    p        e         i    -88.8%   +0.0%  +99.9% 20,006
+Mon 23 Nov 1863     p     e :         i    -73.1%  -22.3%  +99.0% 20,007
+Tue 24 Nov 1863        pe   :         i    -52.0%  -43.4%  +94.5% 20,008
+Wed 25 Nov 1863       e   p :        i     -27.0%  -62.3%  +86.6% 20,009
+Thu 26 Nov 1863     e       p       i       -0.0%  -78.2%  +75.6% 20,010
 
 MIT License
 
@@ -46,11 +46,11 @@ Please consider giving to cancer research.
 https://braintumor.org/
 https://www.cancer.org/
 """
-from datetime import datetime, timedelta
-from math import floor, pi, sin
+from datetime import date, timedelta
+from math import pi, sin
 
 
-def get_data(birth=datetime.now(), plot=datetime.now(), days=7):
+def get_data(birth=date.today(), plot=date.today(), days=7):
     """ Gets the calculated physical, emotional, and intellectual data.
     PARAMETERS:
     birth : birth date of the person
@@ -70,7 +70,7 @@ def get_data(birth=datetime.now(), plot=datetime.now(), days=7):
     return data
 
 
-def plot_chart(birth=datetime.now(), plot=datetime.now(), width=25, days=7):
+def plot_chart(birth=date.today(), plot=date.today(), width=25, days=7):
     """ Plots a chart of physical, emotional, and intellectual cycles.
     PARAMETERS:
     birth : birth date of the person
@@ -81,18 +81,18 @@ def plot_chart(birth=datetime.now(), plot=datetime.now(), width=25, days=7):
     The output is optimized for a traditional 80x24 console window.
     The chart width and days range can be set to fit your system.
     """
-    width = 15 if width < 15 else width
-    midwidth = floor(width / 2)
+    width = max(15, width)
+    midwidth = width // 2
     print('BIORHYTHM for Birth Date:', f'{birth:%A, %d %B %Y}')
     print('p=physical, e=emotional, i=intellectual for days since birth')
     print('Date', ' ' * 10, '-100%', '=' * (width - 12), '+100%',
           '   p   ', '   e   ', '   i   ', 'Day')
     data = get_data(birth=birth, plot=plot, days=days)
     for d, n, p, e, i in data:
-        _p = midwidth + floor(p * (midwidth - 1))  # from middle zero, adds
-        _e = midwidth + floor(e * (midwidth - 1))  # -/+ percentages of width
-        _i = midwidth + floor(i * (midwidth - 1))  # to reach -100% or +100%
-        out = list(('-' if d.date() == plot.date() else ' ') * width)
+        _p = midwidth + int(p * (midwidth - 1))  # starting from middle zero,
+        _e = midwidth + int(e * (midwidth - 1))  # adds -/+ percentages of
+        _i = midwidth + int(i * (midwidth - 1))  # width toward -100% or +100%
+        out = ['-' if d == plot else ' '] * width
         out[midwidth] = ':'
         out[_p] = '*' if _p in {_e, _i} else 'p'  # '*' for overlapping values
         out[_e] = '*' if _e in {_i, _p} else 'e'
@@ -110,5 +110,5 @@ if __name__ == '__main__':
     day = int(input('Enter your birth DAY (1-31): '))
     width = int(input('Enter the chart WIDTH (default=25): ') or '25')
     days = int(input('Enter the before/after DAYS (default=7): ') or '7')
-    plot_chart(birth=datetime(year, month, day), width=width, days=days)
+    plot_chart(birth=date(year, month, day), width=width, days=days)
     input('Press ENTER to Continue: ')
