@@ -105,10 +105,14 @@ def plot_chart(birth=date.today(), plot=date.today(), width=25, days=7):
 
 
 if __name__ == '__main__':
-    year = int(input('Enter your birth YEAR (0001-9999): '))
-    month = int(input('Enter your birth MONTH (1-12): '))
-    day = int(input('Enter your birth DAY (1-31): '))
-    width = int(input('Enter the chart WIDTH (default=25): ') or '25')
-    days = int(input('Enter the before/after DAYS (default=7): ') or '7')
-    plot_chart(birth=date(year, month, day), width=width, days=days)
-    input('Press ENTER to Continue: ')
+    try:
+        year = int(input('Enter your birth YEAR (0001-9999): '))
+        month = int(input('Enter your birth MONTH (1-12): '))
+        day = int(input('Enter your birth DAY (1-31): '))
+        width = int(input('Enter the chart WIDTH (default=25): ') or '25')
+        days = int(input('Enter the before/after DAYS (default=7): ') or '7')
+        plot_chart(birth=date(year, month, day), width=width, days=days)
+    except Exception as e:
+        print(f'{type(e).__name__}: {e}')
+    finally:
+        input('Press ENTER to Continue: ')
