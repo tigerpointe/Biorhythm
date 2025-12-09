@@ -97,7 +97,7 @@ def plot_chart(birth=date.today(), plot=date.today(), width=25, days=7):
         out[_p] = '*' if _p in {_e, _i} else 'p'  # '*' for overlapping values
         out[_e] = '*' if _e in {_i, _p} else 'e'
         out[_i] = '*' if _i in {_p, _e} else 'i'
-        print(f'{">" if d == plot else " "}',
+        print('>' if d == plot else ' ',
               f'{d:%a %d %b %Y}', ''.join(out),
               f'{f"{p:+.1%}":>7}',  # nested percentage and alignment formats
               f'{f"{e:+.1%}":>7}',
