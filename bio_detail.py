@@ -54,7 +54,7 @@ def get_data(birth=date.today(), plot=date.today(), days=7):
     """ Gets the calculated physical, emotional, and intellectual data.
     PARAMETERS:
     birth : birth date of the person
-    plot  : plot date of the chart
+    plot  : plot date of the data
     days  : number of days to include before and after the plot date
     RETURNS:
     The physical, emotional, and intellectual data
