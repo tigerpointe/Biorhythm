@@ -78,7 +78,7 @@ def plot_chart(birth=date.today(), plot=date.today(), width=25, days=7):
     width : width of the chart in characters
     days  : number of days to show before and after the plot date
     REMARKS:
-    The output is optimized for a traditional 80x24 console window.
+    The default output is optimized for a traditional 80x24 console window.
     The chart width and days range can be set to fit your system.
     """
     width = max(15, width)
