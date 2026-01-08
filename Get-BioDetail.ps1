@@ -163,7 +163,7 @@ function Build-Chart {
     #  columns 3, 4 and 5 use fixed column widths with -/+ signs
     ("{0} {1:ddd dd MMM yyyy} {2} " + `
       "{3,7:+0.0%;-0.0%} {4,7:+0.0%;-0.0%} {5,7:+0.0%;-0.0%} {6:N0}") -f `
-      $pointer, $row.d, [String]::new($out), $row.p, $row.e, $row.i, $row.n;
+      $pointer, $row.d, ($out -join ""), $row.p, $row.e, $row.i, $row.n;
   }
 }
 
