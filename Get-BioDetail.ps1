@@ -1,4 +1,6 @@
-﻿<#
+﻿#!/usr/bin/env pwsh
+
+<#
 .SYNOPSIS
 A PowerShell module for generating a detailed biorhythm chart.
 
@@ -55,6 +57,25 @@ https://www.cancer.org/
 #>
 
 
+<#
+.SYNOPSIS
+Gets the data.
+
+.DESCRIPTION
+Gets the calculated physical, emotional, and intellectual data.
+
+.PARAMETER birth
+birth date of the person
+
+.PARAMETER plot
+plot date of the data
+
+.PARAMETER days
+number of days to include before and after the plot date
+
+.OUTPUTS
+The physical, emotional, and intellectual data
+#>
 function Get-Data {
   param (
     $birth = (Get-Date).Date
@@ -65,21 +86,44 @@ function Get-Data {
   for ($d = $plot.AddDays(-$days); `
       $d -le $plot.AddDays($days); `
       $d = $d.AddDays(1)) {
-    $n = ($d.Date - $birth.Date).Days;
-    $p = [Math]::Sin(2 * [Math]::PI * $n / 23);
-    $e = [Math]::Sin(2 * [Math]::PI * $n / 28);
-    $i = [Math]::Sin(2 * [Math]::PI * $n / 33);
+    $n = ($d.Date - $birth.Date).Days; # number of days since birth
+    $p = [Math]::Sin(2 * [Math]::PI * $n / 23); # physical
+    $e = [Math]::Sin(2 * [Math]::PI * $n / 28); # emotional
+    $i = [Math]::Sin(2 * [Math]::PI * $n / 33); # intellectual
     $data += @{
       d = $d
       n = $n
       p = $p
       e = $e
       i = $i
-    };
+    }; # appends object
   }
   return $data;
 }
 
+<#
+.SYNOPSIS
+Builds the chart.
+
+.DESCRIPTION
+Plots a chart of physical, emotional, and intellectual cycles.
+
+.PARAMETER birth
+birth date of the person
+
+.PARAMETER plot
+plot date of the chart
+
+.PARAMETER width
+width of the chart in characters
+
+.PARAMETER days
+number of days to show before and after the plot date
+
+.NOTES
+The default output is optimized for a traditional 80x24 console window.
+The chart width and days range can be set to fit your system.
+#>
 function Build-Chart {
   param (
     $birth = (Get-Date).Date
@@ -97,6 +141,7 @@ function Build-Chart {
   "  Date            -100% {0} +100%    p       e       i    Day" -f `
   ("=" * ($width - 12));
   foreach ($row in $data) {
+    # from middle zero, adds -/+ percentages of width toward -100% or +100%
     $p = $midwidth + [Math]::Floor($row.p * ($midwidth - 1));
     $e = $midwidth + [Math]::Floor($row.e * ($midwidth - 1));
     $i = $midwidth + [Math]::Floor($row.i * ($midwidth - 1));
@@ -111,9 +156,11 @@ function Build-Chart {
     $out[$p] = "p";
     $out[$e] = "e";
     $out[$i] = "i";
+    # '*' for overlapping values
     if (@($e, $i) -contains $p) { $out[$p] = "*"; }
     if (@($i, $p) -contains $e) { $out[$e] = "*"; }
     if (@($p, $e) -contains $i) { $out[$i] = "*"; }
+    #  columns 3, 4 and 5 use fixed column widths with -/+ signs
     ("{0} {1:ddd dd MMM yyyy} {2} " + `
       "{3,7:+0.0%;-0.0%} {4,7:+0.0%;-0.0%} {5,7:+0.0%;-0.0%} {6:N0}") -f `
       $pointer, $row.d, [String]::new($out), $row.p, $row.e, $row.i, $row.n;
