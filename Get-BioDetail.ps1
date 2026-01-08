@@ -157,9 +157,9 @@ function Build-Chart {
     $out[$e] = "e";
     $out[$i] = "i";
     # '*' for overlapping values
-    if (@($e, $i) -contains $p) { $out[$p] = "*"; }
-    if (@($i, $p) -contains $e) { $out[$e] = "*"; }
-    if (@($p, $e) -contains $i) { $out[$i] = "*"; }
+    if ($p -in @($e, $i)) { $out[$p] = "*"; }
+    if ($e -in @($i, $p)) { $out[$e] = "*"; }
+    if ($i -in @($p, $e)) { $out[$i] = "*"; }
     #  columns 3, 4 and 5 use fixed column widths with -/+ signs
     ("{0} {1:ddd dd MMM yyyy} {2} " + `
       "{3,7:+0.0%;-0.0%} {4,7:+0.0%;-0.0%} {5,7:+0.0%;-0.0%} {6:N0}") -f `
