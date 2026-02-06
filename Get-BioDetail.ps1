@@ -66,13 +66,13 @@ Gets the data.
 .DESCRIPTION
 Gets the calculated physical, emotional, and intellectual data.
 
-.PARAMETER birth
+.PARAMETER Birth
 birth date of the person
 
-.PARAMETER plot
+.PARAMETER Plot
 plot date of the data
 
-.PARAMETER days
+.PARAMETER Days
 number of days to include before and after the plot date
 
 .OUTPUTS
@@ -80,15 +80,15 @@ The physical, emotional, and intellectual data
 #>
 function Get-Data {
   param (
-    $birth = (Get-Date).Date
-    , $plot = (Get-Date).Date
-    , $days = 7
+    $Birth = (Get-Date).Date
+    , $Plot = (Get-Date).Date
+    , $Days = 7
   )
   $data = @()
-  for ($d = $plot.AddDays(-$days); `
-      $d -le $plot.AddDays($days); `
+  for ($d = $Plot.AddDays(-$Days); `
+      $d -le $Plot.AddDays($Days); `
       $d = $d.AddDays(1)) {
-    $n = ($d.Date - $birth.Date).Days # number of days since birth
+    $n = ($d.Date - $Birth.Date).Days # number of days since birth
     $p = [Math]::Sin(2 * [Math]::PI * $n / 23) # physical
     $e = [Math]::Sin(2 * [Math]::PI * $n / 28) # emotional
     $i = [Math]::Sin(2 * [Math]::PI * $n / 33) # intellectual
@@ -110,16 +110,16 @@ Builds the chart.
 .DESCRIPTION
 Plots a chart of physical, emotional, and intellectual cycles.
 
-.PARAMETER birth
+.PARAMETER Birth
 birth date of the person
 
-.PARAMETER plot
+.PARAMETER Plot
 plot date of the chart
 
-.PARAMETER width
+.PARAMETER Width
 width of the chart in characters
 
-.PARAMETER days
+.PARAMETER Days
 number of days to show before and after the plot date
 
 .NOTES
@@ -128,20 +128,20 @@ The chart width and days range can be set to fit your system.
 #>
 function Build-Chart {
   param (
-    $birth = (Get-Date).Date
-    , $plot = (Get-Date).Date
-    , $width = 25
-    , $days = 7
+    $Birth = (Get-Date).Date
+    , $Plot = (Get-Date).Date
+    , $Width = 25
+    , $Days = 7
   )
-  $width = [Math]::Max(15, $width)
-  $midwidth = [Math]::Truncate($width / 2)
-  "BIORHYTHM for Birth Date: {0:dddd, dd MMMM yyyy}" -f $birth
+  $Width = [Math]::Max(15, $Width)
+  $midwidth = [Math]::Truncate($Width / 2)
+  "BIORHYTHM for Birth Date: {0:dddd, dd MMMM yyyy}" -f $Birth
   "p=physical, e=emotional, i=intellectual for days since birth"
   "  Date            -100% {0} +100%    p       e       i    Day" `
-    -f ("=" * ($width - 12))
-  $data = Get-Data -birth $birth `
-    -plot $plot `
-    -days $days
+    -f ("=" * ($Width - 12))
+  $data = Get-Data -Birth $Birth `
+    -Plot $Plot `
+    -Days $Days
   foreach ($row in $data) {
     # from middle zero, adds -/+ percentages of width toward -100% or +100%
     $p = $midwidth + [Math]::Truncate($row.p * ($midwidth - 1))
@@ -149,11 +149,11 @@ function Build-Chart {
     $i = $midwidth + [Math]::Truncate($row.i * ($midwidth - 1))
     $space = " "
     $pointer = " "
-    if ($row.d.Date -eq $plot.Date) {
+    if ($row.d.Date -eq $Plot.Date) {
       $space = "-"
       $pointer = ">"
     }
-    $out = ($space * $width).ToCharArray()
+    $out = ($space * $Width).ToCharArray()
     $out[$midwidth] = ":"
     $out[$p] = "p"
     $out[$e] = "e"
@@ -169,8 +169,8 @@ function Build-Chart {
   }
 }
 
-if ($MyInvocation.InvocationName -match "\.ps1$" -or `
-    $MyInvocation.InvocationName -eq ".") {
+if (($MyInvocation.InvocationName -match "\.ps1$") -or `
+  ($MyInvocation.InvocationName -eq ".")) {
   try {
     [int]$year = Read-Host -Prompt "Enter your birth YEAR (0001-9999)"
     [int]$month = Read-Host -Prompt "Enter your birth MONTH (1-12)"
@@ -184,12 +184,12 @@ if ($MyInvocation.InvocationName -match "\.ps1$" -or `
     $birth = Get-Date -Year $year `
       -Month $month `
       -Day $day
-    Build-Chart -birth $birth `
-      -width $width `
-      -days $days
+    Build-Chart -Birth $birth `
+      -Width $width `
+      -Days $days
   }
   catch {
-    $_.Exception.Message
+    Write-Error -Message $_.Exception.Message
   }
   finally {
     Read-Host -Prompt "Press ENTER to Continue"
