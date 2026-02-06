@@ -26,6 +26,12 @@ p=physical, e=emotional, i=intellectual for days since birth
   Wed 25 Nov 1863      e  p :      i     -27.0%  -62.3%  +86.6% 20,009
   Thu 26 Nov 1863    e      p     i       -0.0%  -78.2%  +75.6% 20,010
 
+.INPUTS
+None, nothing is read from the pipeline
+
+.OUTPUTS
+The chart text content
+
 .NOTES
 MIT License
 
@@ -75,6 +81,9 @@ plot date of the data
 .PARAMETER Days
 number of days to include before and after the plot date
 
+.INPUTS
+None, nothing is read from the pipeline
+
 .OUTPUTS
 The physical, emotional, and intellectual data
 #>
@@ -121,6 +130,12 @@ width of the chart in characters
 
 .PARAMETER Days
 number of days to show before and after the plot date
+
+.INPUTS
+None, nothing is read from the pipeline
+
+.OUTPUTS
+The chart text content
 
 .NOTES
 The default output is optimized for a traditional 80x24 console window.
