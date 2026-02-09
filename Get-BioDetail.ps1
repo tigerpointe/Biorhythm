@@ -97,20 +97,21 @@ function Get-Data {
   for ($d = $Plot.AddDays(-$Days); `
       $d -le $Plot.AddDays($Days); `
       $d = $d.AddDays(1)) {
-    $n = ($d.Date - $Birth.Date).Days # number of days since birth
-    $p = [Math]::Sin(2 * [Math]::PI * $n / 23) # physical
-    $e = [Math]::Sin(2 * [Math]::PI * $n / 28) # emotional
-    $i = [Math]::Sin(2 * [Math]::PI * $n / 33) # intellectual
+    $n = ($d.Date - $Birth.Date).Days  # number of days since birth
+    $p = [Math]::Sin(2 * [Math]::PI * $n / 23)  # physical
+    $e = [Math]::Sin(2 * [Math]::PI * $n / 28)  # emotional
+    $i = [Math]::Sin(2 * [Math]::PI * $n / 33)  # intellectual
     $data += @{
       d = $d
       n = $n
       p = $p
       e = $e
       i = $i
-    } # appends hashtable object
+    }  # appends hashtable object
   }
   return $data
 }
+
 
 <#
 .SYNOPSIS
@@ -183,6 +184,7 @@ function Build-Chart {
       -f $pointer, $row.d, ($out -join ""), $row.p, $row.e, $row.i, $row.n
   }
 }
+
 
 if (($MyInvocation.InvocationName -match "\.ps1$") -or `
   ($MyInvocation.InvocationName -eq ".")) {
