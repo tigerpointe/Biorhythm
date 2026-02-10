@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env pwsh
+#!/usr/bin/env pwsh
 
 <#
 .SYNOPSIS
@@ -88,28 +88,29 @@ None, nothing is read from the pipeline
 The physical, emotional, and intellectual data
 #>
 function Get-Data {
-  param (
-    $Birth = (Get-Date).Date
-    , $Plot = (Get-Date).Date
-    , $Days = 7
-  )
-  $data = @()
-  for ($d = $Plot.AddDays(-$Days); `
-      $d -le $Plot.AddDays($Days); `
-      $d = $d.AddDays(1)) {
-    $n = ($d.Date - $Birth.Date).Days  # number of days since birth
-    $p = [Math]::Sin(2 * [Math]::PI * $n / 23)  # physical
-    $e = [Math]::Sin(2 * [Math]::PI * $n / 28)  # emotional
-    $i = [Math]::Sin(2 * [Math]::PI * $n / 33)  # intellectual
-    $data += @{
-      d = $d
-      n = $n
-      p = $p
-      e = $e
-      i = $i
-    }  # appends hashtable object
-  }
-  return $data
+    [CmdletBinding()]
+    param (
+        [datetime]$Birth = (Get-Date).Date,
+        [datetime]$Plot = (Get-Date).Date,
+        [int]$Days = 7
+    )
+    $data = @()
+    for ($d = $Plot.AddDays(-$Days); `
+            $d -le $Plot.AddDays($Days); `
+            $d = $d.AddDays(1)) {
+        $n = ($d.Date - $Birth.Date).Days  # number of days since birth
+        $p = [Math]::Sin(2 * [Math]::PI * $n / 23)  # physical
+        $e = [Math]::Sin(2 * [Math]::PI * $n / 28)  # emotional
+        $i = [Math]::Sin(2 * [Math]::PI * $n / 33)  # intellectual
+        $data += [ordered]@{
+            d = $d
+            n = $n
+            p = $p
+            e = $e
+            i = $i
+        }  # appends hashtable object to list
+    }
+    $data
 }
 
 
@@ -143,72 +144,75 @@ The default output is optimized for a traditional 80x24 console window.
 The chart width and days range can be set to fit your system.
 #>
 function Build-Chart {
-  param (
-    $Birth = (Get-Date).Date
-    , $Plot = (Get-Date).Date
-    , $Width = 25
-    , $Days = 7
-  )
-  $Width = [Math]::Max(15, $Width)
-  $midwidth = [Math]::Truncate($Width / 2)
-  "BIORHYTHM for Birth Date: {0:dddd, dd MMMM yyyy}" -f $Birth
-  "p=physical, e=emotional, i=intellectual for days since birth"
-  "  Date            -100% {0} +100%    p       e       i    Day" `
-    -f ("=" * ($Width - 12))
-  $data = Get-Data -Birth $Birth `
-    -Plot $Plot `
-    -Days $Days
-  foreach ($row in $data) {
-    # from middle zero, adds -/+ percentages of width toward -100% or +100%
-    $p = $midwidth + [Math]::Truncate($row.p * ($midwidth - 1))
-    $e = $midwidth + [Math]::Truncate($row.e * ($midwidth - 1))
-    $i = $midwidth + [Math]::Truncate($row.i * ($midwidth - 1))
-    $space = " "
-    $pointer = " "
-    if ($row.d.Date -eq $Plot.Date) {
-      $space = "-"
-      $pointer = ">"
+    [CmdletBinding()]
+    param (
+        [datetime]$Birth = (Get-Date).Date,
+        [datetime]$Plot = (Get-Date).Date,
+        [int]$Width = 25,
+        [int]$Days = 7
+    )
+    $Width = [Math]::Max(15, $Width)
+    $midwidth = [Math]::Truncate($Width / 2)
+    "BIORHYTHM for Birth Date: {0:dddd, dd MMMM yyyy}" -f $Birth
+    "p=physical, e=emotional, i=intellectual for days since birth"
+    "  Date            -100% {0} +100%    p       e       i    Day" `
+        -f ("=" * ($Width - 12))
+    $data = Get-Data -Birth $Birth `
+        -Plot $Plot `
+        -Days $Days
+    foreach ($row in $data) {
+        # starting from middle zero, adds -/+ percentages of width toward
+        # -100% or +100%
+        $p = $midwidth + [Math]::Truncate($row.p * ($midwidth - 1))
+        $e = $midwidth + [Math]::Truncate($row.e * ($midwidth - 1))
+        $i = $midwidth + [Math]::Truncate($row.i * ($midwidth - 1))
+        $space = " "
+        $pointer = " "
+        if ($row.d.Date -eq $Plot.Date) {
+            $space = "-"
+            $pointer = ">"
+        }
+        $out = ($space * $Width).ToCharArray()
+        $out[$midwidth] = ":"
+        $out[$p] = "p"
+        $out[$e] = "e"
+        $out[$i] = "i"
+        # '*' for overlapping values
+        if ($p -in @($e, $i)) { $out[$p] = "*" }
+        if ($e -in @($i, $p)) { $out[$e] = "*" }
+        if ($i -in @($p, $e)) { $out[$i] = "*" }
+        # columns 3, 4, and 5 use fixed column widths with -/+ signs
+        ("{0} {1:ddd dd MMM yyyy} {2} " + `
+            "{3,7:+0.0%;-0.0%} {4,7:+0.0%;-0.0%} {5,7:+0.0%;-0.0%} {6:N0}") `
+            -f $pointer, $row.d, ($out -join ""), `
+            $row.p, $row.e, $row.i, $row.n
     }
-    $out = ($space * $Width).ToCharArray()
-    $out[$midwidth] = ":"
-    $out[$p] = "p"
-    $out[$e] = "e"
-    $out[$i] = "i"
-    # '*' for overlapping values
-    if ($p -in @($e, $i)) { $out[$p] = "*" }
-    if ($e -in @($i, $p)) { $out[$e] = "*" }
-    if ($i -in @($p, $e)) { $out[$i] = "*" }
-    # columns 3, 4, and 5 use fixed column widths with -/+ signs
-    ("{0} {1:ddd dd MMM yyyy} {2} " + `
-      "{3,7:+0.0%;-0.0%} {4,7:+0.0%;-0.0%} {5,7:+0.0%;-0.0%} {6:N0}") `
-      -f $pointer, $row.d, ($out -join ""), $row.p, $row.e, $row.i, $row.n
-  }
 }
 
 
 if (($MyInvocation.InvocationName -match "\.ps1$") -or `
-  ($MyInvocation.InvocationName -eq ".")) {
-  try {
-    [int]$year = Read-Host -Prompt "Enter your birth YEAR (0001-9999)"
-    [int]$month = Read-Host -Prompt "Enter your birth MONTH (1-12)"
-    [int]$day = Read-Host -Prompt "Enter your birth DAY (1-31)"
-    $width = 25
-    $tmp = Read-Host -Prompt "Enter the chart WIDTH (default=$width)"
-    if (-not [String]::IsNullOrWhiteSpace($tmp)) { [int]$width = $tmp }
-    $days = 7
-    $tmp = Read-Host -Prompt "Enter the before/after DAYS (default=$days)"
-    if (-not [String]::IsNullOrWhiteSpace($tmp)) { [int]$days = $tmp }
-    $birth = Get-Date -Year $year `
-      -Month $month `
-      -Day $day
-    Build-Chart -Birth $birth `
-      -Width $width `
-      -Days $days
-  }
-  catch {
-    Write-Error -Message $_.Exception.Message
-  }
-  finally {
-    Read-Host -Prompt "Press ENTER to Continue"
-  }
+    ($MyInvocation.InvocationName -eq ".")) {
+    try {
+        [int]$year = Read-Host -Prompt "Enter your birth YEAR (0001-9999)"
+        [int]$month = Read-Host -Prompt "Enter your birth MONTH (1-12)"
+        [int]$day = Read-Host -Prompt "Enter your birth DAY (1-31)"
+        $width = 25
+        $tmp = Read-Host -Prompt "Enter the chart WIDTH (default=$width)"
+        if (-not [String]::IsNullOrWhiteSpace($tmp)) { [int]$width = $tmp }
+        $days = 7
+        $tmp = Read-Host -Prompt "Enter the before/after DAYS (default=$days)"
+        if (-not [String]::IsNullOrWhiteSpace($tmp)) { [int]$days = $tmp }
+        $birth = Get-Date -Year $year `
+            -Month $month `
+            -Day $day
+        Build-Chart -Birth $birth `
+            -Width $width `
+            -Days $days
+    }
+    catch {
+        Write-Error -Message $_.Exception.Message
+    }
+    finally {
+        Read-Host -Prompt "Press ENTER to Continue"
+    }
 }
