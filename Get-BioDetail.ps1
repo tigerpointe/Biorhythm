@@ -5,7 +5,7 @@
 Gets a detailed biorhythm.
 
 .DESCRIPTION
-A PowerShell module for generating a detailed biorhythm chart.
+A PowerShell script for generating a detailed biorhythm chart.
 
 BIORHYTHM for Birth Date: Sunday, 12 February 1809
 p=physical, e=emotional, i=intellectual for days since birth
@@ -190,8 +190,15 @@ function Build-Chart {
 }
 
 
-if (($MyInvocation.InvocationName -match "\.ps1$") -or `
-    ($MyInvocation.InvocationName -eq ".")) {
+<#
+$MyInvocation.InvocationName
+    path : when run using the full or relative path
+    "."  : when dot-sourced
+    "&"  : when run using the call operator
+    name : when called as a function
+    ""   : when imported as a module
+#>
+if ($MyInvocation.InvocationName -match "\.ps1$") {
     try {
         [int]$year = Read-Host -Prompt "Enter your birth YEAR (0001-9999)"
         [int]$month = Read-Host -Prompt "Enter your birth MONTH (1-12)"
