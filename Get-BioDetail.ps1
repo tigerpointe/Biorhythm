@@ -177,7 +177,7 @@ function Build-Chart {
         $out[$p] = "p"
         $out[$e] = "e"
         $out[$i] = "i"
-        # '*' for overlapping values
+        # "*" for overlapping values
         if ($p -in @($e, $i)) { $out[$p] = "*" }
         if ($e -in @($i, $p)) { $out[$e] = "*" }
         if ($i -in @($p, $e)) { $out[$i] = "*" }
@@ -191,7 +191,7 @@ function Build-Chart {
 
 
 <#
-$MyInvocation.InvocationName
+$MyInvocation.InvocationName:
     path : when run using the full or relative path
     "."  : when dot-sourced
     "&"  : when run using the call operator
